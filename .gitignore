@@ -1,0 +1,23 @@
+#Compiled C++ files
+*.exe
+*.out
+*.o
+*.obj
+
+#Biuld/output Folders
+build/
+bin/
+output/
+src/output/
+
+#Visual Studio Code
+.vscode/
+
+#OS generated files
+.DS_Store
+Thumbs.db
+
+#Generated banking data
+data/*.txt
+data/*.csv
+data/*.dat
