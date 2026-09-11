@@ -13,5 +13,12 @@ int main() {
     cout<<"4. Check Balance"<<endl;
     cout<<"5. Exit"<<endl;
 
+    int choice;
+    cout<<"\nEnter your choice: ";
+    cin>>choice;
+
+    cout<<"\nYou selected option: "<<choice<<endl;
+    
+
     return 0;
 }
