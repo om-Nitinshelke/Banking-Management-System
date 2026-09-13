@@ -16,19 +16,28 @@ public:
         this->balance=balance;
     }
 
-    void deposit(double amount) {
+    int deposit(double amount) {
+
+        if (amount <=  0) return 0;
         balance += amount;
+
+        return balance;
     }
 
     void withDraw(double amount) {
-        if (amount <= balance) {
-            balance -= amount;
-        } else {
+
+        if (amount > balance) {
             cout<<"Insufficient balance"<<endl;
-        }
+        }else if (balance-amount < 500) {
+            cout<<"After withdrawing this amount the balance will be less than 500 rupees hence according rules of the bank there should be alleast 500 rupees in the balance"<<endl;
+        }else if (amount <= balance) {
+            balance -= amount;
+            cout<<"The withdraw was successful the current balance is:"<<balance<<endl;
+        } 
+        return ;
     }
 
-    void displayAccount() {
+    void displayAccount() const {
         cout<<"\n=====Account Details====="<<endl;
         cout<<"Name:"<<name<<endl;
         cout<<"Account Number:"<<accountNumber<<endl;
@@ -59,7 +68,7 @@ int main() {
     cout<<"\n=====Main Menu====="<<endl;
     cout<<"1.Deposit Money"<<endl;
     cout<<"2.WithDraw Money"<<endl;
-    cout<<"3.Check Amount"<<endl;
+    cout<<"3.Check Account"<<endl;
     cout<<"4.Exit"<<endl;
 
 
@@ -74,8 +83,13 @@ int main() {
             double amount;
             cout<<"\nEnter the amount:";
             cin>>amount;
-            account.deposit(amount);
-            cout<<"\nAmount Deposited Successfully"<<endl;
+            int current_balance=account.deposit(amount);
+
+            if (current_balance) {
+                cout<<"The amount is deposited successfully the current balance is:"<<current_balance<<endl;
+            } else {
+                cout<<"You're amount was smaller than 0 deposition becomes unsuccessful"<<endl;
+            }
             break;
 
         }
