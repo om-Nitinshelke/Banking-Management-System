@@ -1,30 +1,31 @@
 #include <iostream>
 #include <string>
+#include<unordered_map>
+#include<vector>
+#include<cstdlib>
+#include<cctype>
 using namespace std;
 
 
 class BankAccount {
-private:
-    string name;
-    int accountNumber;
-    double balance;
-
 public:
-    BankAccount(string name,int accountNumber,double balance) {
-        this->name=name;
-        this->accountNumber=accountNumber;
-        this->balance=balance;
-    }
 
-    int deposit(double amount) {
+    int deposit(double amount,unordered_map<int,vector<string>> &mp,int account_Number) {
 
-        if (amount <=  0) return 0;
+        if (amount <= 0) return 0;
+        int balance=stoi(mp[account_Number][1]);
+
         balance += amount;
 
+        mp[account_Number][1]=to_string(balance);
+
         return balance;
+        
     }
 
-    void withDraw(double amount) {
+    void withDraw(double amount,unordered_map<int,vector<string>> &mp,int account_Number) {
+        int balance=stoi(mp[account_Number][1]);
+
 
         if (amount > balance) {
             cout<<"Insufficient balance"<<endl;
@@ -32,93 +33,127 @@ public:
             cout<<"After withdrawing this amount the balance will be less than 500 rupees hence according rules of the bank there should be alleast 500 rupees in the balance"<<endl;
         }else if (amount <= balance) {
             balance -= amount;
+            mp[account_Number][1]=to_string(balance);
+
             cout<<"The withdraw was successful the current balance is:"<<balance<<endl;
         } 
         return ;
     }
 
-    void displayAccount() const {
+    void displayAccount(unordered_map<int,vector<string>> &mp,int account_Number) const {
         cout<<"\n=====Account Details====="<<endl;
-        cout<<"Name:"<<name<<endl;
-        cout<<"Account Number:"<<accountNumber<<endl;
-        cout<<"Balance:"<<balance<<endl;
+        cout<<"Name:"<<mp[account_Number][0]<<endl;
+        cout<<"Account Number:"<<account_Number<<endl;
+        cout<<"Balance:"<<mp[account_Number][1]<<endl;
     }
 
 };
 
 int main() {
 
-    cout<<"\n=====Welcome to Banking Management System====="<<endl;
+    unordered_map<int, vector<string>> mp;
 
-    string name;
-    int accountNumber;
-    double balance;
+    cout << "\n=====Welcome to Banking Management System=====" << endl;
 
-    cout<<"\nEnter your name:";
-    getline(cin,name);
-    cout<<"\nEnter the account number:";
-    cin>>accountNumber;
-    cout<<"\nEnter the current balance";
-    cin>>balance;
+    cout << "\n=====Main Menu=====" << endl;
+        cout << "1.Deposit Money" << endl;
+        cout << "2.WithDraw Money" << endl;
+        cout << "3.Check Account" << endl;
+        cout << "4.Create Account" << endl;
+        cout << "5.Exit" << endl;
 
-
-    BankAccount account(name,accountNumber,balance);
-
-
-    cout<<"\n=====Main Menu====="<<endl;
-    cout<<"1.Deposit Money"<<endl;
-    cout<<"2.WithDraw Money"<<endl;
-    cout<<"3.Check Account"<<endl;
-    cout<<"4.Exit"<<endl;
-
+    BankAccount account;
 
     while (true) {
-       int choice;
 
-       cout<<"\nEnter your choice:";
-       cin>>choice;
+        int choice;
+        int account_Number;
 
-       switch (choice) {
-        case 1: {
-            double amount;
-            cout<<"\nEnter the amount:";
-            cin>>amount;
-            int current_balance=account.deposit(amount);
+        cout << "\nEnter your choice:";
+        cin >> choice;
 
-            if (current_balance) {
-                cout<<"The amount is deposited successfully the current balance is:"<<current_balance<<endl;
-            } else {
-                cout<<"You're amount was smaller than 0 deposition becomes unsuccessful"<<endl;
+        if (choice == 4) {
+            string name;
+            int account_number;
+            int amount;
+
+            cin.ignore();
+
+            cout << "\nEnter your name:";
+            getline(cin, name);
+
+            cout << "\nEnter your account number:";
+            cin >> account_number;
+
+            if (mp.find(account_number) != mp.end()) {
+                cout << "Account already exists" << endl;
+                continue;
             }
-            break;
 
+            cout << "\nEnter the amount for first deposit the minimum amount is 500:";
+            cin >> amount;
+
+            if (amount < 500) {
+                cout << "Minimum amount should be 500" << endl;
+            } else {
+                mp[account_number] = {name, to_string(amount)};
+                cout << "Account created successfully" << endl;
+            }
+
+            continue;
         }
 
-        case 2: {
-            double amount;
-            cout<<"\nEnter the amount to withDraw:"<<endl;
-            cin>>amount;
-            account.withDraw(amount);
-            break;
-        }
-
-        case 3: {
-            account.displayAccount();
-            break;
-        }
-
-        case 4: {
-            cout<<"Thanks for using Banking Managment System"<<endl;
+        if (choice == 5) {
+            cout << "Thanks for using Banking Managment System" << endl;
             break;
         }
 
-        default:
-          cout<<"Invlid Choice"<<endl;  
-       }
+        if (choice < 1 || choice > 5) {
+            cout << "Invalid Choice" << endl;
+            continue;
+        }
 
-       if (choice==4)
-        break;
+        cout << "\nEnter your account number:";
+        cin >> account_Number;
+
+        if (mp.find(account_Number) == mp.end()) {
+            cout << "\nYou don't have account here first make the account" << endl;
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1: {
+                double amount;
+                cout << "\nEnter the amount:";
+                cin >> amount;
+
+                int current_balance = account.deposit(amount, mp, account_Number);
+
+                if (current_balance) {
+                    cout << "The amount is deposited successfully the current balance is:" << current_balance << endl;
+                } else {
+                    cout << "Your amount was smaller than 0 deposition becomes unsuccessful" << endl;
+                }
+
+                break;
+            }
+
+            case 2: {
+                double amount;
+                cout << "\nEnter the amount to withDraw:";
+                cin >> amount;
+
+                account.withDraw(amount, mp, account_Number);
+                break;
+            }
+
+            case 3: {
+                account.displayAccount(mp, account_Number);
+                break;
+            }
+        }
     }
-    
+
     return 0;
 }
