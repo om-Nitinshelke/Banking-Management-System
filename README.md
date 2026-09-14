@@ -4,7 +4,7 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 
 ##Project Status
 
-Completed Phase 3:Improves the deposit,withdraw methods.
+Completed Phase 4:Now the System can handle multiple accounts
 
 
 
