@@ -2,29 +2,28 @@
 #include <string>
 #include<unordered_map>
 #include<vector>
-#include<cstdlib>
-#include<cctype>
+#include<fstream>
 using namespace std;
 
 
 class BankAccount {
 public:
 
-    int deposit(double amount,unordered_map<int,vector<string>> &mp,int account_Number) {
+    double deposit(double amount,unordered_map<int,vector<string>> &mp,int account_Number) {
 
         if (amount <= 0) return 0;
-        int balance=stoi(mp[account_Number][1]);
+        double balance=stod(mp[account_Number][2]);
 
         balance += amount;
 
-        mp[account_Number][1]=to_string(balance);
+        mp[account_Number][2]=to_string(balance);
 
         return balance;
         
     }
 
     void withDraw(double amount,unordered_map<int,vector<string>> &mp,int account_Number) {
-        int balance=stoi(mp[account_Number][1]);
+        double balance=stod(mp[account_Number][2]);
 
 
         if (amount > balance) {
@@ -33,7 +32,7 @@ public:
             cout<<"After withdrawing this amount the balance will be less than 500 rupees hence according rules of the bank there should be alleast 500 rupees in the balance"<<endl;
         }else if (amount <= balance) {
             balance -= amount;
-            mp[account_Number][1]=to_string(balance);
+            mp[account_Number][2]=to_string(balance);
 
             cout<<"The withdraw was successful the current balance is:"<<balance<<endl;
         } 
@@ -42,9 +41,9 @@ public:
 
     void displayAccount(unordered_map<int,vector<string>> &mp,int account_Number) const {
         cout<<"\n=====Account Details====="<<endl;
-        cout<<"Name:"<<mp[account_Number][0]<<endl;
+        cout<<"Name:"<<mp[account_Number][0]<<" "<<mp[account_Number][1]<<endl;
         cout<<"Account Number:"<<account_Number<<endl;
-        cout<<"Balance:"<<mp[account_Number][1]<<endl;
+        cout<<"Balance:"<<mp[account_Number][2]<<endl;
     }
 
 };
@@ -55,16 +54,30 @@ int main() {
 
     cout << "\n=====Welcome to Banking Management System=====" << endl;
 
-    cout << "\n=====Main Menu=====" << endl;
+    
+    
+
+    BankAccount account;
+
+    ifstream file("data/account.txt");
+    int accountNumber;
+    string name;
+    string surname;
+    string balance;
+
+
+    while (file >> accountNumber >> name >> surname >> balance) {
+        mp[accountNumber]={name,surname,balance};
+    }
+    file.close();
+
+    while (true) {
+        cout << "\n=====Main Menu=====" << endl;
         cout << "1.Deposit Money" << endl;
         cout << "2.WithDraw Money" << endl;
         cout << "3.Check Account" << endl;
         cout << "4.Create Account" << endl;
         cout << "5.Exit" << endl;
-
-    BankAccount account;
-
-    while (true) {
 
         int choice;
         int account_Number;
@@ -74,13 +87,16 @@ int main() {
 
         if (choice == 4) {
             string name;
+            string surname;
             int account_number;
-            int amount;
+            double amount;
 
-            cin.ignore();
 
             cout << "\nEnter your name:";
-            getline(cin, name);
+            cin>>name;
+
+            cout << "\nEnter your surname:";
+            cin>>surname;
 
             cout << "\nEnter your account number:";
             cin >> account_number;
@@ -96,7 +112,7 @@ int main() {
             if (amount < 500) {
                 cout << "Minimum amount should be 500" << endl;
             } else {
-                mp[account_number] = {name, to_string(amount)};
+                mp[account_number] = {name, surname, to_string(amount)};
                 cout << "Account created successfully" << endl;
             }
 
@@ -104,7 +120,13 @@ int main() {
         }
 
         if (choice == 5) {
-            cout << "Thanks for using Banking Managment System" << endl;
+            cout << "Thanks for using Banking Management System" << endl;
+
+            ofstream file("data/account.txt");
+            for (auto account:mp) {
+                file<<account.first<<" "<<account.second[0]<<" "<<account.second[1]<<" "<<account.second[2]<<endl;
+            }
+            file.close();
             break;
         }
 
@@ -128,7 +150,7 @@ int main() {
                 cout << "\nEnter the amount:";
                 cin >> amount;
 
-                int current_balance = account.deposit(amount, mp, account_Number);
+                double current_balance = account.deposit(amount, mp, account_Number);
 
                 if (current_balance) {
                     cout << "The amount is deposited successfully the current balance is:" << current_balance << endl;
@@ -143,8 +165,13 @@ int main() {
                 double amount;
                 cout << "\nEnter the amount to withDraw:";
                 cin >> amount;
-
-                account.withDraw(amount, mp, account_Number);
+                if (amount <= 0) {
+                    cout << "The amount should be greater than 0" << endl;
+                } else {
+                    account.withDraw(amount, mp, account_Number);
+                }
+    
+                
                 break;
             }
 
