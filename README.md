@@ -4,7 +4,7 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 
 ##Project Status
 
-Completed Phase 5:Implements file handling and data persistence
+Phase 6:Transaction Management(In Progress)
 
 
 

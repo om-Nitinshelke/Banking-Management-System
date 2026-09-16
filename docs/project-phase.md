@@ -35,3 +35,17 @@
 - Account operations modify the data structure during program execution.
 - Updated account data is written back to the file when the user exits.
 - Implemented persistent storage so account data remains available between program runs.
+
+## Phase 6: Transaction Management
+
+- 🔄 Phase currently in progress.
+- Created a separate `Transaction_Record` class.
+- Created `transaction.h` for class declarations.
+- Created `transaction.cpp` for class implementations.
+- Added a transaction history using `vector<string>`.
+- Associated transaction records with account numbers.
+- Integrated transaction recording with deposit operations.
+- Integrated transaction recording with withdrawal operations.
+- Added transaction history viewing.
+- Transaction history is currently stored only in memory.
+- Transaction persistence to a file is planned.
