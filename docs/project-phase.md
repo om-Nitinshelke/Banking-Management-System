@@ -38,14 +38,17 @@
 
 ## Phase 6: Transaction Management
 
-- 🔄 Phase currently in progress.
+- Implemented transaction management for bank accounts.
 - Created a separate `Transaction_Record` class.
 - Created `transaction.h` for class declarations.
 - Created `transaction.cpp` for class implementations.
-- Added a transaction history using `vector<string>`.
+- Added transaction history using `vector<string>`.
 - Associated transaction records with account numbers.
+- Used `unordered_map<int, Transaction_Record>` to manage transaction history for multiple accounts.
 - Integrated transaction recording with deposit operations.
 - Integrated transaction recording with withdrawal operations.
 - Added transaction history viewing.
-- Transaction history is currently stored only in memory.
-- Transaction persistence to a file is planned.
+- Implemented transaction persistence using file handling.
+- Transaction history is loaded from `data/transactions.txt` when the program starts.
+- Transaction history is stored in memory during program execution.
+- Updated transaction history is written back to `data/transactions.txt` when the program exits.
