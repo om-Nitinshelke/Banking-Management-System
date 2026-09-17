@@ -18,7 +18,7 @@ public:
 
         mp[account_Number][2] = to_string(balance);
 
-        transaction.addTransaction("Deposit +" + to_string(amount));
+        transaction.addTransaction("Deposit", amount);
 
         return balance;
     }
@@ -36,7 +36,7 @@ public:
             balance -= amount;
             mp[account_Number][2] = to_string(balance);
 
-            transaction.addTransaction("WithDraw -" + to_string(amount));
+            transaction.addTransaction("WithDraw", amount);
 
             cout << "The withdraw was successful. The current balance is: " << balance << endl;
         }
@@ -71,6 +71,20 @@ int main() {
     }
 
     file.close();
+
+    ifstream transaction_file("data/transaction.txt");
+    int acn;
+    string str1;
+    double amnt;
+
+    while (transaction_file >> acn >> str1 >> amnt) {
+        if (transactions.find(acn)==transactions.end()) {
+            continue;
+        }
+        transactions.at(acn).addTransaction(str1,amnt);
+    }
+
+    transaction_file.close();
 
     while (true) {
         cout << "\n=====Main Menu=====" << endl;
@@ -120,7 +134,7 @@ int main() {
                     Transaction_Record(account_number)
                 );
 
-                result.first->second.addTransaction("Initial Deposit: +" + to_string(amount));
+                result.first->second.addTransaction("InitialDeposit", amount);
 
                 cout << "Account created successfully" << endl;
             }
@@ -141,7 +155,18 @@ int main() {
             }
 
             file.close();
+            
+            ofstream transaction_file("data/transaction.txt");
+
+            for (auto &transactionData : transactions) {
+                transactionData.second.saveTransactions(transaction_file);
+            }
+
+            transaction_file.close();
+
             break;
+
+
         }
 
         if (choice < 1 || choice > 5) {

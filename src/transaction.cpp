@@ -7,8 +7,8 @@ Transaction_Record::Transaction_Record(int account_number) {
     account = account_number;
 }
 
-void Transaction_Record::addTransaction(string record) {
-    transaction_record.push_back(record);
+void Transaction_Record::addTransaction(string type, double amount) {
+    transaction_record.push_back({type, amount});
 }
 
 void Transaction_Record::displayTransaction() const {
@@ -20,7 +20,13 @@ void Transaction_Record::displayTransaction() const {
     cout << "\n=====Transaction History=====" << endl;
     cout << "Account Number: " << account << endl;
 
-    for (string record : transaction_record) {
-        cout << record << endl;
+    for (Transaction record : transaction_record) {
+        cout << record.type << " " << record.amount << endl;
+    }
+}
+
+void Transaction_Record::saveTransactions(ostream &out) const {
+    for (Transaction record : transaction_record) {
+        out << account << " " << record.type << " " << record.amount << endl;
     }
 }
