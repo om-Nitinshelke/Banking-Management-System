@@ -59,8 +59,58 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 
 ## Phase 7: Input Validation and Error Handling
 
-- 🔄 Phase currently in progress.
+- 🔄 Phase currently in progress.   
 
+
+## Features
+
+- Create a bank account
+- Store multiple accounts
+- Deposit money
+- Withdraw money
+- Check account details
+- Minimum balance validation
+- Account data persistence using files
+- Transaction history tracking
+- Transaction history persistence
+- Load transaction history when the program starts
+- Save transaction history when the program exits
+
+## Technologies and Concepts
+
+- C++
+- Object-Oriented Programming
+- Classes and Objects
+- Encapsulation
+- STL
+- `unordered_map`
+- `vector`
+- File Handling
+- `ifstream`
+- `ofstream`
+- Header and Implementation Files
+- Constructors
+- Member Functions
+- Basic Input Validation
+- Transaction Management
+
+
+## Project Structure
+
+```text
+Banking-Management-System/
+├── README.md
+├── .gitignore
+├── include/
+│   └── transaction.h
+├── src/
+│   ├── main.cpp
+│   └── transaction.cpp
+├── data/
+│   ├── account.txt
+│   └── transactions.txt
+└── docs/
+     └── project-phases.md
 
 
 
