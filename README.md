@@ -57,9 +57,20 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 - Stored transaction information in memory during execution.
 - Saved updated transaction history back to the file when the program exits.
 
-## Phase 7: Input Validation and Error Handling
+## Phase 7: Exception Handling and Input Validation
 
-- 🔄 Phase currently in progress.   
+- Implemented input validation throughout the system.
+- Added handling for invalid user inputs.
+- Added validation for invalid transaction amounts.
+- Added validation for invalid menu choices.
+- Implemented exception handling using `try`, `throw`, and `catch`.
+- Added handling for unexpected errors during program execution.
+- Improved the system's ability to handle invalid input without terminating unexpectedly.
+- Improved the overall reliability and robustness of the banking system.
+
+## Phase 8: Login and Security
+
+- 🔄 Phase currently in progress.
 
 
 ## Features
@@ -75,6 +86,10 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 - Transaction history persistence
 - Load transaction history when the program starts
 - Save transaction history when the program exits
+- Input validation
+- Exception handling
+- Handling invalid user input
+- Handling unexpected errors
 
 ## Technologies and Concepts
 
@@ -93,6 +108,7 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 - Member Functions
 - Basic Input Validation
 - Transaction Management
+- Exception Handling and input validation
 
 
 ## Project Structure
