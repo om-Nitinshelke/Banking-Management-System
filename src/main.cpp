@@ -112,12 +112,13 @@ int main() {
     ifstream file("data/account.txt");
 
     if (!file) {
-        cout << "Unable to open account data file. Starting with empty account data." << endl;
-    } else {
-        while (file >> accountNumber >> name >> surname >> balance) {
-            mp[accountNumber] = {name, surname, balance};
-            transactions.emplace(accountNumber, Transaction_Record(accountNumber));
-        }
+    cout << "Error: Unable to open account data file." << endl;
+    return 1;
+}
+
+    while (file >> accountNumber >> name >> surname >> balance) {
+        mp[accountNumber] = {name, surname, balance};
+        transactions.emplace(accountNumber, Transaction_Record(accountNumber));
     }
 
 
@@ -130,13 +131,17 @@ int main() {
     ifstream transaction_file("data/transaction.txt");
 
     if (!transaction_file) {
-        cout << "Unable to open transaction data file. Starting with empty transaction history." << endl;
-    } else {
-        while (transaction_file >> acn >> str1 >> amnt) {
-            if (transactions.find(acn) != transactions.end()) {
-                transactions.at(acn).addTransaction(str1, amnt);
-            }
+        cout << "Error: Unable to open transaction data file." << endl;
+        return 1;
+    }
+
+    while (transaction_file >> acn >> str1 >> amnt) {
+        if (transactions.find(acn) == transactions.end()) {
+            cout << "Error: Transaction found for unknown account number " << acn << endl;
+            return 1;
         }
+
+        transactions.at(acn).addTransaction(str1, amnt);
     }
     
 
