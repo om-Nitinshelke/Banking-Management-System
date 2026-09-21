@@ -16,7 +16,7 @@ public:
         
         auto it = mp.find(account_Number);
 
-        if (it == mp.end() || it->second.size() < 3) {
+        if (it == mp.end() || it->second.size() < 4) {
             cout << "Invalid account data for account " << account_Number << endl;
             return 0; 
         }
@@ -44,7 +44,7 @@ public:
                   int account_Number, Transaction_Record &transaction) {
         auto it = mp.find(account_Number);
 
-        if (it == mp.end() || it->second.size() < 3) {
+        if (it == mp.end() || it->second.size() < 4) {
             cout << "Invalid account data for account " << account_Number << endl;
             return;
         }
@@ -92,9 +92,36 @@ public:
         cout << "Name: " << it->second[0] << " " << it->second[1] << endl;
         cout << "Account Number: " << account_Number << endl;
         cout << "Balance: " << it->second[2] << endl;
+        cout << "PIN: " << it->second[3] <<endl;
     }
     
 };
+
+bool Login(unordered_map<int,vector<string>> &mp) {
+    int account_Number;
+    cout << "\nEnter the account number:";
+    cin  >> account_Number;
+
+    auto it = mp.find(account_Number);
+    if (it == mp.end()) {
+        cout << "\nAccount does not exist."<<endl;
+        return false;
+    } else {
+        string StoredPin = it->second[3];
+        string enteredPin;
+
+        cout << "\nEnter the PIN for the account:";
+        cin >> enteredPin;
+
+        if (enteredPin == StoredPin) {
+            return true;
+        } else {
+            false;
+        }
+
+    }
+}
+
 
 int main() {
     unordered_map<int, vector<string>> mp;
@@ -108,6 +135,7 @@ int main() {
     string name;
     string surname;
     string balance;
+    string pin_number;
 
     ifstream file("data/account.txt");
 
@@ -116,8 +144,8 @@ int main() {
     return 1;
 }
 
-    while (file >> accountNumber >> name >> surname >> balance) {
-        mp[accountNumber] = {name, surname, balance};
+    while (file >> accountNumber >> name >> surname >> balance >> pin_number) {
+        mp[accountNumber] = {name, surname, balance,pin_number};
         transactions.emplace(accountNumber, Transaction_Record(accountNumber));
     }
 
@@ -143,10 +171,15 @@ int main() {
 
         transactions.at(acn).addTransaction(str1, amnt);
     }
-    
-
-
     transaction_file.close();
+
+    bool authenticate = Login(mp);
+
+    if (!authenticate) {
+        cout << "\nYou're PIN is not matching with the account number PIN" << endl;
+        cout << "\nYou cannot perform any activity" << endl;
+        return 1;
+    }
 
     while (true) {
         cout << "\n=====Main Menu=====" << endl;
@@ -168,6 +201,7 @@ int main() {
             string surname;
             int account_number;
             double amount;
+            int pin;
 
             cout << "\nEnter your name: ";
             cin >> name;
@@ -191,10 +225,13 @@ int main() {
             cout << "\nEnter the amount for first deposit. Minimum amount is 500: ";
             cin >> amount;
 
+            cout<<"\nEnter the pin for the account:";
+            cin >>pin;
+
             if (amount < 500) {
                 cout << "Minimum amount should be 500" << endl;
             } else {
-                mp[account_number] = {name, surname, to_string(amount)};
+                mp[account_number] = {name, surname, to_string(amount),to_string(pin)};
 
                 auto result = transactions.emplace(
                     account_number,
@@ -219,13 +256,14 @@ int main() {
                 }
 
                 for (const auto &accountData : mp) {
-                    if (accountData.second.size() < 3) {
+                    if (accountData.second.size() < 4) {
                         throw out_of_range("Account data is incomplete while writing file");
                     }
                     file << accountData.first << " "
                          << accountData.second[0] << " "
                          << accountData.second[1] << " "
-                         << accountData.second[2] << endl;
+                         << accountData.second[2] << " "
+                         << accountData.second[3] <<endl;
                 }
             } catch (const exception &e) {
                 cout << "Exception while writing account file: " << e.what() << endl;
@@ -253,7 +291,7 @@ int main() {
 
         }
 
-        if (choice < 1 || choice > 5) {
+        if (choice < 1 || choice > 6) {
             cout << "Invalid Choice" << endl;
             continue;
         }
