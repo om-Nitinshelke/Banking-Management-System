@@ -68,7 +68,23 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 - Improved the system's ability to handle invalid input without terminating unexpectedly.
 - Improved the overall reliability and robustness of the banking system.
 
-## Phase 8: Login and Security
+## Phase 8: Authentication
+
+- Implemented a login system for the banking application.
+- Added account number and PIN-based authentication.
+- Updated account data to include a PIN for each account.
+- Updated account data loading to read the PIN along with the existing account information.
+- Implemented account number verification during login.
+- Implemented PIN verification for the corresponding account.
+- Added validation to check whether the entered account number exists.
+- Prevented access to banking operations when the account number does not exist.
+- Prevented access to banking operations when the entered PIN does not match the stored PIN.
+- Allowed access to the banking menu only after successful authentication.
+- Added appropriate messages for invalid account numbers and incorrect PINs.
+- Integrated the authentication process with the existing account data structure.
+- Controlled access to banking operations based on the authentication result.
+
+## Phase 9: Security
 
 - 🔄 Phase currently in progress.
 
