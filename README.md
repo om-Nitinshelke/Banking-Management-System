@@ -86,7 +86,8 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 
 ## Phase 9: Security
 
-- 🔄 Phase currently in progress.
+-  9.1:Security Fundamentals
+⏭️ 9.2:PIN Hashing
 
 
 ## Features
