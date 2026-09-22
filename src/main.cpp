@@ -90,9 +90,7 @@ public:
 
         cout << "\n=====Account Details=====" << endl;
         cout << "Name: " << it->second[0] << " " << it->second[1] << endl;
-        cout << "Account Number: " << account_Number << endl;
         cout << "Balance: " << it->second[2] << endl;
-        cout << "PIN: " << it->second[3] <<endl;
     }
     
 };
