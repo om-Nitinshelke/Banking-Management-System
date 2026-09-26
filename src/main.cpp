@@ -1,4 +1,5 @@
 #include <iostream>
+#include<sodium.h>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -96,27 +97,28 @@ public:
 };
 
 bool Login(unordered_map<int,vector<string>> &mp) {
-    int account_Number;
-    cout << "\nEnter the account number:";
-    cin  >> account_Number;
+    string enteredpin;
 
-    auto it = mp.find(account_Number);
+    int account_number;
+    cout << "\nEnter the account number:";
+    cin >> account_number;
+
+    auto it = mp.find(account_number);
     if (it == mp.end()) {
-        cout << "\nAccount does not exist."<<endl;
+        cout << "\nAccount number does not exist." << endl;
         return false;
     } else {
-        string StoredPin = it->second[3];
-        string enteredPin;
+        
+        cout << "\nEnter the pin number:";
+        cin >> enteredpin;
 
-        cout << "\nEnter the PIN for the account:";
-        cin >> enteredPin;
+        const string &storedHash = it->second[3];
 
-        if (enteredPin == StoredPin) {
-            return true;
+        if (crypto_pwhash_str_verify(storedHash.c_str(), enteredpin.c_str(), enteredpin.length()) != 0) {
+            return false;
         } else {
-            false;
+            return true;
         }
-
     }
 }
 
@@ -124,6 +126,10 @@ bool Login(unordered_map<int,vector<string>> &mp) {
 int main() {
     unordered_map<int, vector<string>> mp;
     unordered_map<int, Transaction_Record> transactions;
+    if (sodium_init() == -1){
+    std::cout << "Security initialization failed." << std::endl;
+    return 1;
+    }
 
     cout << "\n=====Welcome to Banking Management System=====" << endl;
 
@@ -171,11 +177,19 @@ int main() {
     }
     transaction_file.close();
 
-    bool authenticate = Login(mp);
+    char hasAccount;
+    cout<< "\n Do you have an account? (y/n): ";
+    cin >> hasAccount;
 
-    if (!authenticate) {
-        cout << "\nYou're PIN is not matching with the account number PIN" << endl;
-        cout << "\nYou cannot perform any activity" << endl;
+    if (hasAccount == 'y' || hasAccount == 'Y') {
+        if (!Login(mp)) {
+            cout << "\nInvalid account number or pin. Exiting." << endl;
+            return 1;
+        }
+    } else if (hasAccount == 'n' || hasAccount == 'N') {
+        cout << "\nPlease create an account first." << endl;
+    } else {
+        cout << "\nInvalid input. Exiting." << endl;
         return 1;
     }
 
@@ -199,7 +213,7 @@ int main() {
             string surname;
             int account_number;
             double amount;
-            int pin;
+            string pin;
 
             cout << "\nEnter your name: ";
             cin >> name;
@@ -226,10 +240,25 @@ int main() {
             cout<<"\nEnter the pin for the account:";
             cin >>pin;
 
+            size_t pin_length = pin.length();
+            char hashed_pin[crypto_pwhash_STRBYTES]; 
+
+            if (crypto_pwhash_str(
+                hashed_pin,
+                pin.c_str(),
+                pin_length,
+                crypto_pwhash_OPSLIMIT_INTERACTIVE,
+                crypto_pwhash_MEMLIMIT_INTERACTIVE) != 0) {
+                cout<<"\nPIN hashing failed" << endl;
+                continue;
+            }
+            string storedHash = hashed_pin;
+            
+
             if (amount < 500) {
                 cout << "Minimum amount should be 500" << endl;
             } else {
-                mp[account_number] = {name, surname, to_string(amount),to_string(pin)};
+                mp[account_number] = {name, surname, to_string(amount),storedHash};
 
                 auto result = transactions.emplace(
                     account_number,
