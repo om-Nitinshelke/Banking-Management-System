@@ -87,8 +87,28 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 ## Phase 9: Security
 
 -  9.1:Security Fundamentals
-⏭️ 9.2:PIN Hashing
+-  9.2: PIN Hashing
 
+     In this phase, PIN hashing was implemented to avoid storing
+     user PINs in plaintext.
+
+     Libsodium was integrated into the project and Argon2id-based
+     password hashing was used.
+
+     During account creation, the entered PIN is passed to
+     `crypto_pwhash_str()`. The resulting hash is stored instead
+     of the original PIN.
+
+     During authentication, the entered PIN is verified against
+     the stored hash using `crypto_pwhash_str_verify()`.
+
+     The verification process does not decrypt the stored hash.
+     Instead, the hashing parameters and salt contained in the
+     stored hash are used to verify whether the entered PIN
+     matches the original PIN.
+
+     This ensures that the account data file does not contain
+     plaintext PINs.
 
 ## Features
 
