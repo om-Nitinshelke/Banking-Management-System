@@ -105,3 +105,51 @@
 
      This ensures that the account data file does not contain
      plaintext PINs.
+- 9.3 Salting
+
+     In this phase, the purpose and behavior of salting in password
+     hashing were studied and verified.
+
+     A salt is a randomly generated value used during password
+     hashing. Its purpose is to ensure that the same PIN does not
+     produce the same hash every time it is hashed.
+
+     Libsodium's `crypto_pwhash_str()` was tested by hashing the same
+     PIN multiple times.
+
+     The same PIN produced different encoded hashes because a
+     different random salt was generated for each hashing operation.
+
+     The salt and the hashing parameters are included in the
+     resulting encoded hash.
+
+     Therefore, a separate salt field does not need to be created
+     or stored manually when using Libsodium's high-level password
+     hashing API.
+
+     The generated hashes were then tested using
+     `crypto_pwhash_str_verify()`.
+
+     Both differently salted hashes successfully verified the same
+     correct PIN.
+
+     An incorrect PIN was also tested and verification returned a
+     non-zero result, confirming that the incorrect PIN was rejected.
+
+     The verification process was studied to understand how the
+     stored hash is used.
+
+     During verification, Libsodium obtains the salt and hashing
+     parameters from the stored encoded hash and uses them to
+     process the entered PIN before comparing the result with the
+     stored hash.
+
+     The application is responsible for identifying the account and
+     providing that account's stored hash to Libsodium.
+
+     Libsodium then verifies the entered PIN against that specific
+     stored hash.
+
+     No custom salt-generation mechanism was implemented because
+     Libsodium already handles salt generation, storage, and use as
+     part of its password hashing API.
