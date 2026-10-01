@@ -98,28 +98,40 @@ public:
 
 bool Login(unordered_map<int,vector<string>> &mp) {
     string enteredpin;
-
     int account_number;
+
     cout << "\nEnter the account number:";
     cin >> account_number;
 
     auto it = mp.find(account_number);
+    
     if (it == mp.end()) {
-        cout << "\nAccount number does not exist." << endl;
+        cout << "\nAccount Number does not exist." << endl;
         return false;
     } else {
-        
-        cout << "\nEnter the pin number:";
-        cin >> enteredpin;
+        cout << "\nYou have only 3 attempts to login"<< endl;
+        const string &storedhash =  it->second[3];
+        int attempts = 0;
+        int remianing = 3;
+        while (attempts < 3) {
+            cout << "\nEnter the pin number:";
+            cin >> enteredpin;
 
-        const string &storedHash = it->second[3];
+            if (crypto_pwhash_str_verify(storedhash.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
+                return true;
+            }
+            remianing--;
+            cout << "\nRemaining attempts:"<<remianing;
+            attempts++;
 
-        if (crypto_pwhash_str_verify(storedHash.c_str(), enteredpin.c_str(), enteredpin.length()) != 0) {
-            return false;
-        } else {
-            return true;
         }
+
+        cout << "\nYou have exhausted your attempts.";
+        cout << "\nLogin Failed";
+        return false;
+
     }
+
 }
 
 
