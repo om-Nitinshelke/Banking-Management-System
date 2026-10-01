@@ -84,11 +84,11 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 - Integrated the authentication process with the existing account data structure.
 - Controlled access to banking operations based on the authentication result.
 
-## Phase 9: Security
-│
-├── 9.1 Security Fundamentals
-├── 9.2 PIN Hashing       ✅
-└── 9.3 Salting           ✅
+## Phase 9: Security — In Progress
+  - ✅ 9.1: Security Fundamentals
+  - ✅ 9.2: PIN Hashing
+  - ✅ 9.3: Salting
+  - ✅ 9.4: Login Attempt Limiting
 
 
 ## Features

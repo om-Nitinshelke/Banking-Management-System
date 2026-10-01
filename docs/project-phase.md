@@ -153,3 +153,24 @@
      No custom salt-generation mechanism was implemented because
      Libsodium already handles salt generation, storage, and use as
      part of its password hashing API.
+-9.4: Login Attempt Limiting
+
+     A login attempt limit was implemented to prevent unlimited
+     PIN verification attempts.
+
+     The user is allowed a maximum of three login attempts during
+     a login session.
+
+     If the entered PIN is incorrect, the attempt counter is
+     incremented and the user is allowed to try again.
+
+     If the correct PIN is entered within the allowed attempts,
+     authentication succeeds and the user is given access to the
+     banking operations.
+
+     If all three attempts are incorrect, authentication fails and
+     access to the banking operations is denied.
+
+     The current implementation limits attempts only for the
+     current login session. It does not permanently lock the
+     account or store the failed attempt count in the account file.
