@@ -153,7 +153,8 @@
      No custom salt-generation mechanism was implemented because
      Libsodium already handles salt generation, storage, and use as
      part of its password hashing API.
--9.4: Login Attempt Limiting
+
+- 9.4: Login Attempt Limiting
 
      A login attempt limit was implemented to prevent unlimited
      PIN verification attempts.
@@ -174,3 +175,44 @@
      The current implementation limits attempts only for the
      current login session. It does not permanently lock the
      account or store the failed attempt count in the account file.
+
+- 9.5 Account Lockout
+
+     In this phase, an account lockout mechanism was implemented
+     to prevent continued access after multiple failed login
+     attempts.
+
+     The login system already limited the user to three PIN
+     verification attempts. After all three attempts failed, the
+     account status was changed from `Active` to `Inactive`.
+
+     The inactive status is stored in the account data structure
+     along with the account information.
+
+     The account data file was updated to store the account status,
+     allowing the lockout state to persist after the program exits.
+
+     During login, the account status is checked after finding the
+     account.
+
+     If the account status is `Inactive`, the login process is
+     stopped immediately and the user is informed that the account
+     is locked.
+
+     No additional PIN attempts are allowed for an inactive account.
+
+     The account itself is not deleted from the system. Its account
+     information, balance, PIN hash, and transaction history remain
+     stored.
+
+     The lockout only prevents normal authentication and access to
+     the banking operations.
+
+     The account status is saved to `account.txt` when the login
+     process fails after the maximum number of attempts.
+
+     This ensures that restarting the program does not automatically
+     remove the lockout.
+
+     This phase introduced persistent account lockout as an
+     additional security mechanism in the banking system.

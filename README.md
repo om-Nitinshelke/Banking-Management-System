@@ -89,6 +89,7 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
   - ✅ 9.2: PIN Hashing
   - ✅ 9.3: Salting
   - ✅ 9.4: Login Attempt Limiting
+  - ✅ 9.5: Account Lockout
 
 
 ## Features
