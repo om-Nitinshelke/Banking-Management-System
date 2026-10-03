@@ -95,6 +95,31 @@ public:
     
 };
 
+bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it) {
+
+    const string &storedpin = it->second[3];
+
+    int attempts = 0;
+    int remaining = 3;
+    string enteredpin;
+    while (attempts < 3) {
+        std::cout << "\nEnter the pin number:";
+        std::cin >> enteredpin;
+        if (crypto_pwhash_str_verify(storedpin.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
+            cout << "\nAccount is activated successfully.";
+            it->second[4] = "Active";
+            return true;
+        } else {
+            cout << "\nEntered wrong pin";
+            remaining--;
+            if (remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining
+;           attempts++;
+        }
+    }
+
+    return false;
+}
+
 bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
     string enteredpin;
     int account_number;
@@ -114,13 +139,23 @@ bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
         return false;
         
     } else if (it->second[4]=="Inactive") {
-        std::cout <<"\n Account is locked.Access denied please contact the bank";
-        return false;
+        std::cout <<"\n Account is locked.";
+        char choice;
+        std::cout <<"\nDo you want to activate it(Enter y for Yes and n for No):";
+        std::cin >> choice;
+        if (choice == 'Y' || choice == 'y') {
+            return activate(it);
+        } else if (choice == 'N' || choice == 'n') {
+            return false;
+        } else {
+            std::cout <<"\nInvalid choice";
+            return false;
+        }
     }else {
-        std::cout << "\nYou have only 3 attempts to login"<< endl;
+        std::cout << "\nYou have only 3 attempts to login if didn't able ton login your account will be locked."<< endl;
         const string &storedhash =  it->second[3];
         int attempts = 0;
-        int remianing = 3;
+        int remaining = 3;
         while (attempts < 3) {
             std::cout << "\nEnter the pin number:";
             std::cin >> enteredpin;
@@ -128,12 +163,11 @@ bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
             if (crypto_pwhash_str_verify(storedhash.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
                 return true;
             }
-            remianing--;
-            std::cout << "\nRemaining attempts:"<<remianing;
+            remaining--;
+            if ( remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining
+;
             attempts++;
-
         }
-
     }
     
     std::cout << "\nYou have exhausted your attempts.";
