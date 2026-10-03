@@ -216,3 +216,53 @@
 
      This phase introduced persistent account lockout as an
      additional security mechanism in the banking system.
+
+- 9.6: Account Recovery and Unlocking
+
+     In this phase, an account recovery and unlocking mechanism was
+     implemented for accounts that have been locked after multiple
+     failed login attempts.
+
+     When the login process finds that an account has an `Inactive`
+     status, the user is informed that the account is locked.
+
+     The user is then given the option to activate the account again.
+
+     If the user chooses not to activate the account, the login
+     function returns `false` and access to the banking operations
+     is denied.
+
+     If the user chooses to activate the account, the account's
+     stored PIN hash is retrieved from the account data.
+
+     The user is given a maximum of three attempts to enter the
+     correct PIN.
+
+     The entered PIN is verified using Libsodium's
+     `crypto_pwhash_str_verify()` function.
+
+     The original PIN is never stored or recovered during this
+     process. The entered PIN is verified against the stored PIN
+     hash.
+
+     If the correct PIN is entered within the three allowed
+     attempts, the account status is changed from `Inactive` to
+     `Active`.
+
+     The activation function then returns `true`, allowing the
+     `Login()` function to return `true` and grant access to the
+     banking operations.
+
+     If all three PIN attempts are incorrect, the activation process
+     fails and the function returns `false`.
+
+     The account remains inactive and access to the banking
+     operations is denied.
+
+     The account status is later written back to `account.txt` along
+     with the other account information, allowing the activation
+     status to persist after the program is restarted.
+
+     This phase completes the basic account recovery and unlocking
+     mechanism while reusing the existing PIN hashing and verification
+     system.

@@ -90,6 +90,7 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
   - ✅ 9.3: Salting
   - ✅ 9.4: Login Attempt Limiting
   - ✅ 9.5: Account Lockout
+  - ✅ 9.6: Account Recovery and Unlocking
 
 
 ## Features
