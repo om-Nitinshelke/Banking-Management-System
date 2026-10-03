@@ -112,12 +112,93 @@ bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it) {
         } else {
             cout << "\nEntered wrong pin";
             remaining--;
-            if (remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining
-;           attempts++;
+            if (remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining;
+            attempts++;
         }
     }
 
     return false;
+}
+
+void LoadAccounts(std::unordered_map<int, std::vector<std::string>> &mp,
+                  std::unordered_map<int, Transaction_Record> &transactions) {
+    ifstream file("data/account.txt");
+
+    if (!file) {
+        std::cout << "Error: Unable to open account data file." << endl;
+        return;
+    }
+
+    int accountNumber;
+    string name;
+    string surname;
+    string balance;
+    string pin_number;
+    string account_status;
+
+    while (file >> accountNumber >> name >> surname >> balance >> pin_number >> account_status) {
+        mp[accountNumber] = {name, surname, balance, pin_number, account_status};
+        transactions.emplace(accountNumber, Transaction_Record(accountNumber));
+    }
+}
+
+void LoadTransactions(std::unordered_map<int, Transaction_Record> &transactions) {
+    ifstream transaction_file("data/transaction.txt");
+
+    if (!transaction_file) {
+        std::cout << "Error: Unable to open transaction data file." << endl;
+        return;
+    }
+
+    int acn;
+    string str1;
+    double amnt;
+
+    while (transaction_file >> acn >> str1 >> amnt) {
+        if (transactions.find(acn) == transactions.end()) {
+            std::cout << "Error: Transaction found for unknown account number " << acn << endl;
+            continue; 
+        }
+
+        transactions.at(acn).addTransaction(str1, amnt);
+    }
+
+}
+
+void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp) {
+    ofstream file("data/account.txt");
+
+    if (!file) {
+        std::cout << "Error: Unable to open account data file for writing." << endl;
+        return;
+    }
+
+    for (const auto &accountData : mp) {
+        if (accountData.second.size() < 5) {
+            std::cout << "Error: Incomplete account data for account number " << accountData.first << endl;
+            continue; 
+        }
+        file << accountData.first << " "
+             << accountData.second[0] << " "
+             << accountData.second[1] << " "
+             << accountData.second[2] << " "
+             << accountData.second[3] << " "
+             << accountData.second[4] << endl;
+    }
+
+}
+
+void Savetransactions(const std::unordered_map<int, Transaction_Record> &transactions) {
+    std::ofstream transaction_file("data/transaction.txt");
+
+    if (!transaction_file) {
+        std::cout << "Error: Unable to open transaction data file for writing." << endl;
+        return;
+    }
+
+    for (const auto &transactionData : transactions) {
+        transactionData.second.saveTransactions(transaction_file);
+    }
 }
 
 bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
@@ -191,48 +272,10 @@ int main() {
 
     BankAccount account;
 
-    int accountNumber;
-    string name;
-    string surname;
-    string balance;
-    string pin_number;
-    string account_status;
 
-    ifstream file("data/account.txt");
+    LoadAccounts(mp, transactions);
 
-    if (!file) {
-    std::cout << "Error: Unable to open account data file." << endl;
-    return 1;
-}
-
-    while (file >> accountNumber >> name >> surname >> balance >> pin_number >> account_status) {
-        mp[accountNumber] = {name, surname, balance,pin_number, account_status};
-        transactions.emplace(accountNumber, Transaction_Record(accountNumber));
-    }
-
-
-    file.close();
-
-    int acn;
-    string str1;
-    double amnt;
-
-    ifstream transaction_file("data/transaction.txt");
-
-    if (!transaction_file) {
-        std::cout << "Error: Unable to open transaction data file." << endl;
-        return 1;
-    }
-
-    while (transaction_file >> acn >> str1 >> amnt) {
-        if (transactions.find(acn) == transactions.end()) {
-            std::cout << "Error: Transaction found for unknown account number " << acn << endl;
-            return 1;
-        }
-
-        transactions.at(acn).addTransaction(str1, amnt);
-    }
-    transaction_file.close();
+    LoadTransactions(transactions);
 
     char hasAccount;
     std::cout<< "\n Do you have an account? (y/n): ";
@@ -241,43 +284,7 @@ int main() {
     if (hasAccount == 'y' || hasAccount == 'Y') {
         if (!Login(mp)) {
             std::cout << "\nInvalid account number or pin. Exiting." << endl;
-            ofstream file("data/account.txt");
-            try {
-                if (!file) {
-                    throw runtime_error("Unable to open account file for writing");
-                }
-
-                for (const auto &accountData : mp) {
-                    if (accountData.second.size() < 5) {
-                        throw out_of_range("Account data is incomplete while writing file");
-                    }
-                    file << accountData.first << " "
-                         << accountData.second[0] << " "
-                         << accountData.second[1] << " "
-                         << accountData.second[2] << " "
-                         << accountData.second[3] << " "
-                         << accountData.second[4] << endl;
-                }
-            } catch (const exception &e) {
-                std::cout << "Exception while writing account file: " << e.what() << endl;
-            }
-
-            file.close();
-            
-            ofstream transaction_file("data/transaction.txt");
-            try {
-                if (!transaction_file) {
-                    throw runtime_error("Unable to open transaction file for writing");
-                }
-
-                for (auto &transactionData : transactions) {
-                    transactionData.second.saveTransactions(transaction_file);
-                }
-            } catch (const exception &e) {
-                std::cout << "Exception while writing transaction file: " << e.what() << endl;
-            }
-
-            transaction_file.close();
+            SaveAccounts(mp);
             return 1;
         }
     } else if (hasAccount == 'n' || hasAccount == 'N') {
@@ -308,7 +315,6 @@ int main() {
             int account_number;
             double amount;
             string pin;
-            string account_status;
 
             std::cout << "\nEnter your name: ";
             std::cin >> name;
@@ -370,62 +376,19 @@ int main() {
 
         if (choice == 6) {
             std::cout << "Thanks for using Banking Management System" << endl;
-
-            std::ofstream file("data/account.txt");
-            try {
-                if (!file) {
-                    throw std::runtime_error("Unable to open account file for writing");
-                }
-
-                for (const auto &accountData : mp) {
-                    if (accountData.second.size() < 5) {
-                        throw std::out_of_range("Account data is incomplete while writing file");
-                    }
-                    file << accountData.first << " "
-                         << accountData.second[0] << " "
-                         << accountData.second[1] << " "
-                         << accountData.second[2] << " "
-                         << accountData.second[3] << " "
-                         << accountData.second[4] << endl;
-                }
-            } catch (const exception &e) {
-                std::cout << "Exception while writing account file: " << e.what() << endl;
-            }
-
-            file.close();
-            
-            std::ofstream transaction_file("data/transaction.txt");
-            try {
-                if (!transaction_file) {
-                    throw std::runtime_error("Unable to open transaction file for writing");
-                }
-
-                for (auto &transactionData : transactions) {
-                    transactionData.second.saveTransactions(transaction_file);
-                }
-            } catch (const exception &e) {
-                std::cout << "Exception while writing transaction file: " << e.what() << endl;
-            }
-
-            transaction_file.close();
-
+            SaveAccounts(mp);
+            Savetransactions(transactions);
             break;
-
-
         }
+
 
         if (choice < 1 || choice > 6) {
             std::cout << "Invalid Choice" << endl;
             continue;
         }
 
-        std::cout << "\nEnter your account number: ";
+        std::cout << "\nEnter the account number:";
         std::cin >> account_Number;
-
-        if (mp.find(account_Number) == mp.end()) {
-            std::cout << "\nYou don't have account here. First make the account." << endl;
-            continue;
-        }
 
         switch (choice) {
             case 1: {
