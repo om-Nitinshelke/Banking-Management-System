@@ -6,6 +6,7 @@
 #include <fstream>
 #include <stdexcept>
 #include "../include/transaction.h"
+#include "../include/pin_strength.h"
 
 
 class BankAccount {
@@ -245,8 +246,7 @@ bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
                 return true;
             }
             remaining--;
-            if ( remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining
-;
+            if ( remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining;
             attempts++;
         }
     }
@@ -258,6 +258,40 @@ bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
 
 
 }
+
+std::string GivePIN() {
+    std::string Pin_number;
+    PINStrength pinChecker;
+
+    while (true) {
+        cout << "\nEnter the pin number(atmost there should be 8 digits):";
+        cin >> Pin_number;
+
+        if (Pin_number.length() > 8) {
+            cout << "\nThere should be atmost 8 digits";
+            continue;
+        }else if(Pin_number.length() <= 8) {
+            bool valid = true;
+            for (char ch : Pin_number) {
+                if (ch < '0' || ch > '9') {
+                    cout << "\nYour input pin number is invalid because it contains letters,and symbols";
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) continue;
+        }
+        bool isWeak = pinChecker.isWeak(Pin_number);
+
+        if (isWeak) {
+            cout << "\nYour pin number is weak. Please choose a stronger pin." << endl;
+            continue;
+        } else {
+            break;
+        }
+    }
+    return Pin_number;
+};
 
 
 int main() {
@@ -338,8 +372,7 @@ int main() {
             std::cout << "\nEnter the amount for first deposit. Minimum amount is 500: ";
             std::cin >> amount;
 
-            std::cout<<"\nEnter the pin for the account:";
-            std::cin >> pin;
+            pin = GivePIN();
 
             size_t pin_length = pin.length();
             char hashed_pin[crypto_pwhash_STRBYTES]; 
