@@ -266,3 +266,25 @@
      This phase completes the basic account recovery and unlocking
      mechanism while reusing the existing PIN hashing and verification
      system.
+- 9.7: Weak PIN Detection
+
+     Implemented weak PIN detection to prevent users from choosing easily predictable PINs.
+
+     Features:
+
+     - Detects PINs containing the same repeated digit.
+     - Detects ascending digit sequences.
+     - Detects descending digit sequences.
+     - Basic PIN validation remains in `main.cpp`.
+     - Added a separate `PINStrength` class for PIN strength analysis.
+     - Added `pin_strength.h` for class declarations.
+     - Added `pin_strength.cpp` for the implementation of PIN strength checks.
+
+     Weak PIN Examples:
+
+     - `1111` → Repeated digits
+     - `7777` → Repeated digits
+     - `1234` → Ascending sequence
+     - `4321` → Descending sequence
+
+     The PIN is checked for these weak patterns before it is hashed and stored.
