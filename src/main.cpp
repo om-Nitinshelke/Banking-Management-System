@@ -266,7 +266,23 @@ std::string GivePIN() {
     while (true) {
         cout << "\nEnter the pin number(atmost there should be 8 digits):";
         cin >> Pin_number;
-
+        if (Pin_number.length() < 4) {
+            cout << "\nThere should be atleast 4 digits";
+            continue;
+        } else if (Pin_number.length() > 8) {
+            cout << "\nThere should be atmost 8 digits";
+            continue;
+        } else if (Pin_number.length() <= 8) {
+            bool valid = true;
+            for (char ch : Pin_number) {
+                if (ch < '0' || ch > '9') {
+                    cout << "\nYour input pin number is invalid because it contains letters,and symbols";
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) continue;
+        }
         if (Pin_number.length() > 8) {
             cout << "\nThere should be atmost 8 digits";
             continue;

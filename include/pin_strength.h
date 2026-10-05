@@ -11,6 +11,7 @@ private:
     bool isRepeated(const std::string &pin);
     bool isAscending(const std::string &pin);
     bool isDescending(const std::string &pin);
+    bool isFrequent(const std::string &pin);
 };
 
 

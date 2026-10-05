@@ -11,6 +11,9 @@ bool PINStrength::isWeak(const std::string &pin)
     if (isDescending(pin))
         return true;
 
+    if (isFrequent(pin))
+        return true;
+
     return false;
 }
 
@@ -45,4 +48,22 @@ bool PINStrength::isDescending(const std::string &pin)
     }
 
     return true;
+}
+
+bool PINStrength::isFrequent(const std::string &pin)
+{
+    int count[10] = {};
+
+    for (char digit : pin)
+    {
+        count[digit - '0']++;
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (count[i] >= 4)
+            return true;
+    }
+
+    return false;
 }
