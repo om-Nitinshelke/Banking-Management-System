@@ -286,5 +286,6 @@
      - `7777` → Repeated digits
      - `1234` → Ascending sequence
      - `4321` → Descending sequence
+     - `5656755` ->Excessive digit frequency
 
      The PIN is checked for these weak patterns before it is hashed and stored.
