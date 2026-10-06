@@ -289,3 +289,17 @@
      - `5656755` ->Excessive digit frequency
 
      The PIN is checked for these weak patterns before it is hashed and stored.
+
+## Phase 10: Project Architecture & Separation of Responsibilities
+
+- Phase 10.1:Separate BankAccount
+
+     - Separated the `BankAccount` class from `main.cpp`.
+     - Created `include/bank_account.h` to contain the class declaration and function prototypes.
+     - Created `src/bank_account.cpp` to contain the implementations of:
+     - `deposit()`
+     - `withDraw()`
+     - `displayAccount()`
+     - Updated `main.cpp` to include `bank_account.h`.
+     - Kept the existing account operation logic unchanged while improving project structure.
+     - This separation makes the code easier to maintain and prepares the project for further architectural improvements in Phase 10.

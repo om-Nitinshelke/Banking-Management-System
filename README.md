@@ -93,6 +93,12 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
   - ✅ 9.6: Account Recovery and Unlocking
   - ✅ 9.7: Weak PIN Detection
 
+## Phase 10: Project Architecture & Separation of Responsibilities
+  - ✅ 10.1: Separate BankAccount
+  - ⬜ 10.2: Separate Authentication
+  - ⬜ 10.3: Account Management
+  - ⬜ 10.4: Clean main.cpp
+
 
 ## Features
 
