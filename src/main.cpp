@@ -7,94 +7,95 @@
 #include <stdexcept>
 #include "../include/transaction.h"
 #include "../include/pin_strength.h"
+#include "../include/bank_account.h"
 
 
-class BankAccount {
-public:
-    double deposit(double amount, std::unordered_map<int, std::vector<std::string>> &mp,
-                   int account_Number, Transaction_Record &transaction) {
-        if (amount <= 0) return 0;
+// class BankAccount {
+// public:
+//     double deposit(double amount, std::unordered_map<int, std::vector<std::string>> &mp,
+//                    int account_Number, Transaction_Record &transaction) {
+//         if (amount <= 0) return 0;
         
-        auto it = mp.find(account_Number);
+//         auto it = mp.find(account_Number);
 
-        if (it == mp.end() || it->second.size() < 5) {
-            std::cout << "Invalid account data for account " << account_Number << endl;
-            return 0; 
-        }
+//         if (it == mp.end() || it->second.size() < 5) {
+//             std::cout << "Invalid account data for account " << account_Number << endl;
+//             return 0; 
+//         }
 
-        double balance = 0.0;
+//         double balance = 0.0;
 
-        try {
-            balance = stod(it->second[2]);
-        } catch (const invalid_argument &) {
-            std::cout << "Invalid balance format for account " << account_Number << endl;
-            return 0;
-        } catch (const out_of_range &) {
-            std::cout << "Balance value is out of range for account " << account_Number << endl;
-            return 0;
-        }
+//         try {
+//             balance = stod(it->second[2]);
+//         } catch (const invalid_argument &) {
+//             std::cout << "Invalid balance format for account " << account_Number << endl;
+//             return 0;
+//         } catch (const out_of_range &) {
+//             std::cout << "Balance value is out of range for account " << account_Number << endl;
+//             return 0;
+//         }
        
 
-        balance += amount;
-        it->second[2] = to_string(balance);
-        transaction.addTransaction("Deposit", amount);
-        return balance;
-    }
+//         balance += amount;
+//         it->second[2] = to_string(balance);
+//         transaction.addTransaction("Deposit", amount);
+//         return balance;
+//     }
 
-    void withDraw(double amount, std::unordered_map<int, std::vector<std::string>> &mp,
-                  int account_Number, Transaction_Record &transaction) {
-        auto it = mp.find(account_Number);
+//     void withDraw(double amount, std::unordered_map<int, std::vector<std::string>> &mp,
+//                   int account_Number, Transaction_Record &transaction) {
+//         auto it = mp.find(account_Number);
 
-        if (it == mp.end() || it->second.size() < 5) {
-            std::cout << "Invalid account data for account " << account_Number << endl;
-            return;
-        }
+//         if (it == mp.end() || it->second.size() < 5) {
+//             std::cout << "Invalid account data for account " << account_Number << endl;
+//             return;
+//         }
 
-        double balance = 0.0;
-        try {
-            balance = stod(it->second[2]);
-        } catch (const invalid_argument &) {
-            std::cout << "Invalid balance format for account " << account_Number << endl;
-            return;
-        } catch (const out_of_range &) {
-            std::cout << "Balance value is out of range for account " << account_Number << endl;
-            return;
-        }
+//         double balance = 0.0;
+//         try {
+//             balance = stod(it->second[2]);
+//         } catch (const invalid_argument &) {
+//             std::cout << "Invalid balance format for account " << account_Number << endl;
+//             return;
+//         } catch (const out_of_range &) {
+//             std::cout << "Balance value is out of range for account " << account_Number << endl;
+//             return;
+//         }
 
-        if (amount > balance) {
-            std::cout << "Insufficient balance" << endl;
-        } else if (balance - amount < 500) {
-            std::cout << "After withdrawing this amount the balance will be less than 500 rupees." << endl;
-            std::cout << "According to bank rules, at least 500 rupees should remain in the account." << endl;
-        } else {
-            balance -= amount;
-            it->second[2] = to_string(balance);
+//         if (amount > balance) {
+//             std::cout << "Insufficient balance" << endl;
+//         } else if (balance - amount < 500) {
+//             std::cout << "After withdrawing this amount the balance will be less than 500 rupees." << endl;
+//             std::cout << "According to bank rules, at least 500 rupees should remain in the account." << endl;
+//         } else {
+//             balance -= amount;
+//             it->second[2] = to_string(balance);
 
-            transaction.addTransaction("WithDraw", amount);
+//             transaction.addTransaction("WithDraw", amount);
 
-            std::cout << "The withdraw was successful. The current balance is: " << balance << endl;
-        }
-    }
+//             std::cout << "The withdraw was successful. The current balance is: " << balance << endl;
+//         }
+//     }
 
-    void displayAccount(std::unordered_map<int, std::vector<std::string>> &mp, int account_Number) const {
-        auto it = mp.find(account_Number);
+//     void displayAccount(std::unordered_map<int, std::vector<std::string>> &mp, int account_Number) const {
+//         auto it = mp.find(account_Number);
 
-        if (it == mp.end()) {
-            std::cout << "Account number does not exist" << endl;
-            return;
-        }
+//         if (it == mp.end()) {
+//             std::cout << "Account number does not exist" << endl;
+//             return;
+//         }
 
-        if (it->second.size() < 5) {
-            std::cout << "Account data is incomplete" << endl;
-            return;
-        }
+//         if (it->second.size() < 5) {
+//             std::cout << "Account data is incomplete" << endl;
+//             return;
+//         }
 
-        std::cout << "\n=====Account Details=====" << endl;
-        std::cout << "Name: " << it->second[0] << " " << it->second[1] << endl;
-        std::cout << "Balance: " << it->second[2] << endl;
-    }
+//         std::cout << "\n=====Account Details=====" << endl;
+//         std::cout << "Name: " << it->second[0] << " " << it->second[1] << endl;
+//         std::cout << "Balance: " << it->second[2] << endl;
+//     }
     
-};
+// };
 
 bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it) {
 
