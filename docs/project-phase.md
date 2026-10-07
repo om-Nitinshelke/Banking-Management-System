@@ -303,3 +303,15 @@
      - Updated `main.cpp` to include `bank_account.h`.
      - Kept the existing account operation logic unchanged while improving project structure.
      - This separation makes the code easier to maintain and prepares the project for further architectural improvements in Phase 10.
+
+- Phase 10.2:Separate Authentication
+
+- Separated authentication logic from `main.cpp`.
+- Created `include/authentication.h` for authentication function declarations.
+- Created `src/authentication.cpp` for authentication implementations.
+- Moved the `Login()` function into the authentication module.
+- Moved the `activate()` function into the authentication module.
+- Kept PIN verification using Libsodium and Argon2id.
+- Preserved the existing three-attempt login limit and account lockout mechanism.
+- Preserved account activation/unlocking through PIN verification.
+- This separation improves code organization and keeps authentication responsibilities independent from the main program flow.

@@ -95,7 +95,7 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 
 ## Phase 10: Project Architecture & Separation of Responsibilities
   - ✅ 10.1: Separate BankAccount
-  - ⬜ 10.2: Separate Authentication
+  - ✅ 10.2: Separate Authentication
   - ⬜ 10.3: Account Management
   - ⬜ 10.4: Clean main.cpp
 
@@ -147,12 +147,14 @@ Banking-Management-System/
 ├── include/
 |   |__pin_strength.h
 |   |__bank_account.h
-│   └── transaction.h
+│   |__authentication.h
+|   |__transaction.h 
 |   
 ├── src/
 |   |___pin_stength.cpp
 |   |__bank_account.cpp
 │   ├── main.cpp
+|   |__authentication.cpp
 │   └── transaction.cpp
 ├── data/
 │   ├── account.txt
