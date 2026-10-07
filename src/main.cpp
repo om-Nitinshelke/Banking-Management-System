@@ -8,119 +8,32 @@
 #include "../include/transaction.h"
 #include "../include/pin_strength.h"
 #include "../include/bank_account.h"
+#include "../include/authentication.h"
 
+// bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it) {
 
-// class BankAccount {
-// public:
-//     double deposit(double amount, std::unordered_map<int, std::vector<std::string>> &mp,
-//                    int account_Number, Transaction_Record &transaction) {
-//         if (amount <= 0) return 0;
-        
-//         auto it = mp.find(account_Number);
+//     const string &storedpin = it->second[3];
 
-//         if (it == mp.end() || it->second.size() < 5) {
-//             std::cout << "Invalid account data for account " << account_Number << endl;
-//             return 0; 
-//         }
-
-//         double balance = 0.0;
-
-//         try {
-//             balance = stod(it->second[2]);
-//         } catch (const invalid_argument &) {
-//             std::cout << "Invalid balance format for account " << account_Number << endl;
-//             return 0;
-//         } catch (const out_of_range &) {
-//             std::cout << "Balance value is out of range for account " << account_Number << endl;
-//             return 0;
-//         }
-       
-
-//         balance += amount;
-//         it->second[2] = to_string(balance);
-//         transaction.addTransaction("Deposit", amount);
-//         return balance;
-//     }
-
-//     void withDraw(double amount, std::unordered_map<int, std::vector<std::string>> &mp,
-//                   int account_Number, Transaction_Record &transaction) {
-//         auto it = mp.find(account_Number);
-
-//         if (it == mp.end() || it->second.size() < 5) {
-//             std::cout << "Invalid account data for account " << account_Number << endl;
-//             return;
-//         }
-
-//         double balance = 0.0;
-//         try {
-//             balance = stod(it->second[2]);
-//         } catch (const invalid_argument &) {
-//             std::cout << "Invalid balance format for account " << account_Number << endl;
-//             return;
-//         } catch (const out_of_range &) {
-//             std::cout << "Balance value is out of range for account " << account_Number << endl;
-//             return;
-//         }
-
-//         if (amount > balance) {
-//             std::cout << "Insufficient balance" << endl;
-//         } else if (balance - amount < 500) {
-//             std::cout << "After withdrawing this amount the balance will be less than 500 rupees." << endl;
-//             std::cout << "According to bank rules, at least 500 rupees should remain in the account." << endl;
+//     int attempts = 0;
+//     int remaining = 3;
+//     string enteredpin;
+//     while (attempts < 3) {
+//         std::cout << "\nEnter the pin number:";
+//         std::cin >> enteredpin;
+//         if (crypto_pwhash_str_verify(storedpin.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
+//             cout << "\nAccount is activated successfully.";
+//             it->second[4] = "Active";
+//             return true;
 //         } else {
-//             balance -= amount;
-//             it->second[2] = to_string(balance);
-
-//             transaction.addTransaction("WithDraw", amount);
-
-//             std::cout << "The withdraw was successful. The current balance is: " << balance << endl;
+//             cout << "\nEntered wrong pin";
+//             remaining--;
+//             if (remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining;
+//             attempts++;
 //         }
 //     }
 
-//     void displayAccount(std::unordered_map<int, std::vector<std::string>> &mp, int account_Number) const {
-//         auto it = mp.find(account_Number);
-
-//         if (it == mp.end()) {
-//             std::cout << "Account number does not exist" << endl;
-//             return;
-//         }
-
-//         if (it->second.size() < 5) {
-//             std::cout << "Account data is incomplete" << endl;
-//             return;
-//         }
-
-//         std::cout << "\n=====Account Details=====" << endl;
-//         std::cout << "Name: " << it->second[0] << " " << it->second[1] << endl;
-//         std::cout << "Balance: " << it->second[2] << endl;
-//     }
-    
-// };
-
-bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it) {
-
-    const string &storedpin = it->second[3];
-
-    int attempts = 0;
-    int remaining = 3;
-    string enteredpin;
-    while (attempts < 3) {
-        std::cout << "\nEnter the pin number:";
-        std::cin >> enteredpin;
-        if (crypto_pwhash_str_verify(storedpin.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
-            cout << "\nAccount is activated successfully.";
-            it->second[4] = "Active";
-            return true;
-        } else {
-            cout << "\nEntered wrong pin";
-            remaining--;
-            if (remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining;
-            attempts++;
-        }
-    }
-
-    return false;
-}
+//     return false;
+// }
 
 void LoadAccounts(std::unordered_map<int, std::vector<std::string>> &mp,
                   std::unordered_map<int, Transaction_Record> &transactions) {
@@ -203,62 +116,62 @@ void Savetransactions(const std::unordered_map<int, Transaction_Record> &transac
     }
 }
 
-bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
-    string enteredpin;
-    int account_number;
+// bool Login(std::unordered_map<int,std::vector<std::string>> &mp) {
+//     string enteredpin;
+//     int account_number;
 
-    std::cout << "\nEnter the account number:";
-    std::cin >> account_number;
+//     std::cout << "\nEnter the account number:";
+//     std::cin >> account_number;
 
-    auto it = mp.find(account_number);
+//     auto it = mp.find(account_number);
 
     
     
-    if (it == mp.end()) {
-        std::cout << "\nAccount Number does not exist." << endl;
-        return false;
-    }else if(it->second.size() < 5) {
-        std::cout << "\nAccount data is incomplete." << endl;
-        return false;
+//     if (it == mp.end()) {
+//         std::cout << "\nAccount Number does not exist." << endl;
+//         return false;
+//     }else if(it->second.size() < 5) {
+//         std::cout << "\nAccount data is incomplete." << endl;
+//         return false;
         
-    } else if (it->second[4]=="Inactive") {
-        std::cout <<"\n Account is locked.";
-        char choice;
-        std::cout <<"\nDo you want to activate it(Enter y for Yes and n for No):";
-        std::cin >> choice;
-        if (choice == 'Y' || choice == 'y') {
-            return activate(it);
-        } else if (choice == 'N' || choice == 'n') {
-            return false;
-        } else {
-            std::cout <<"\nInvalid choice";
-            return false;
-        }
-    }else {
-        std::cout << "\nYou have only 3 attempts to login if didn't able ton login your account will be locked."<< endl;
-        const string &storedhash =  it->second[3];
-        int attempts = 0;
-        int remaining = 3;
-        while (attempts < 3) {
-            std::cout << "\nEnter the pin number:";
-            std::cin >> enteredpin;
+//     } else if (it->second[4]=="Inactive") {
+//         std::cout <<"\n Account is locked.";
+//         char choice;
+//         std::cout <<"\nDo you want to activate it(Enter y for Yes and n for No):";
+//         std::cin >> choice;
+//         if (choice == 'Y' || choice == 'y') {
+//             return activate(it);
+//         } else if (choice == 'N' || choice == 'n') {
+//             return false;
+//         } else {
+//             std::cout <<"\nInvalid choice";
+//             return false;
+//         }
+//     }else {
+//         std::cout << "\nYou have only 3 attempts to login if didn't able ton login your account will be locked."<< endl;
+//         const string &storedhash =  it->second[3];
+//         int attempts = 0;
+//         int remaining = 3;
+//         while (attempts < 3) {
+//             std::cout << "\nEnter the pin number:";
+//             std::cin >> enteredpin;
 
-            if (crypto_pwhash_str_verify(storedhash.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
-                return true;
-            }
-            remaining--;
-            if ( remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining;
-            attempts++;
-        }
-    }
+//             if (crypto_pwhash_str_verify(storedhash.c_str(), enteredpin.c_str(), enteredpin.length()) == 0) {
+//                 return true;
+//             }
+//             remaining--;
+//             if ( remaining!= 0)std::cout << "\nRemaining attempts:"<<remaining;
+//             attempts++;
+//         }
+//     }
     
-    std::cout << "\nYou have exhausted your attempts.";
-    std::cout << "\nLogin Failed";
-    it->second[4] = "Inactive";
-    return false;
+//     std::cout << "\nYou have exhausted your attempts.";
+//     std::cout << "\nLogin Failed";
+//     it->second[4] = "Inactive";
+//     return false;
 
 
-}
+// }
 
 std::string GivePIN() {
     std::string Pin_number;
