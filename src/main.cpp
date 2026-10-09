@@ -12,41 +12,41 @@
 #include "../include/account_manager.h"
 
 
-void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp) {
-    ofstream file("data/account.txt");
+// void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp) {
+//     ofstream file("data/account.txt");
 
-    if (!file) {
-        std::cout << "Error: Unable to open account data file for writing." << endl;
-        return;
-    }
+//     if (!file) {
+//         std::cout << "Error: Unable to open account data file for writing." << endl;
+//         return;
+//     }
 
-    for (const auto &accountData : mp) {
-        if (accountData.second.size() < 5) {
-            std::cout << "Error: Incomplete account data for account number " << accountData.first << endl;
-            continue; 
-        }
-        file << accountData.first << " "
-             << accountData.second[0] << " "
-             << accountData.second[1] << " "
-             << accountData.second[2] << " "
-             << accountData.second[3] << " "
-             << accountData.second[4] << endl;
-    }
+//     for (const auto &accountData : mp) {
+//         if (accountData.second.size() < 5) {
+//             std::cout << "Error: Incomplete account data for account number " << accountData.first << endl;
+//             continue; 
+//         }
+//         file << accountData.first << " "
+//              << accountData.second[0] << " "
+//              << accountData.second[1] << " "
+//              << accountData.second[2] << " "
+//              << accountData.second[3] << " "
+//              << accountData.second[4] << endl;
+//     }
 
-}
+// }
 
-void Savetransactions(const std::unordered_map<int, Transaction_Record> &transactions) {
-    std::ofstream transaction_file("data/transaction.txt");
+// void Savetransactions(const std::unordered_map<int, Transaction_Record> &transactions) {
+//     std::ofstream transaction_file("data/transaction.txt");
 
-    if (!transaction_file) {
-        std::cout << "Error: Unable to open transaction data file for writing." << endl;
-        return;
-    }
+//     if (!transaction_file) {
+//         std::cout << "Error: Unable to open transaction data file for writing." << endl;
+//         return;
+//     }
 
-    for (const auto &transactionData : transactions) {
-        transactionData.second.saveTransactions(transaction_file);
-    }
-}
+//     for (const auto &transactionData : transactions) {
+//         transactionData.second.saveTransactions(transaction_file);
+//     }
+// }
 
 std::string GivePIN() {
     std::string Pin_number;
