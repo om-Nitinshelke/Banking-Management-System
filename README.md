@@ -125,20 +125,16 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 
 - C++
 - Object-Oriented Programming
-- Classes and Objects
-- Encapsulation
-- STL
-- `unordered_map`
-- `vector`
-- File Handling
-- `ifstream`
-- `ofstream`
-- Header and Implementation Files
-- Constructors
-- Member Functions
-- Basic Input Validation
-- Transaction Management
-- Exception Handling and input validation
+- Classes, objects, and encapsulation
+- Standard Template Library (STL)
+- std::unordered_map
+- std::vector
+- File handling with std::ifstream and std::ofstream
+- Header and implementation files
+- Constructors and member functions
+- Exception handling
+- Libsodium and Argon2id
+- Modular project architecture
 
 
 ## Project Structure
@@ -148,12 +144,14 @@ Banking-Management-System/
 ├── README.md
 ├── .gitignore
 ├── include/
+|   |__account_manager.h
 |   |__pin_strength.h
 |   |__bank_account.h
 │   |__authentication.h
 |   |__transaction.h 
 |   
 ├── src/
+|   |__account_manager.cpp
 |   |___pin_stength.cpp
 |   |__bank_account.cpp
 │   ├── main.cpp

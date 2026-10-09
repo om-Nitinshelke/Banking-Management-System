@@ -1,4 +1,5 @@
 #include "../include/account_manager.h"
+#include "../include/pin_strength.h"
 
 #include <fstream>
 #include <iostream>
@@ -105,3 +106,54 @@ void Savetransactions(const std::unordered_map<int, Transaction_Record> &transac
         transactionData.second.saveTransactions(transaction_file);
     }
 }
+
+
+std::string GivePIN() {
+    std::string Pin_number;
+    PINStrength pinChecker;
+
+    while (true) {
+        cout << "\nEnter the pin number(atmost there should be 8 digits):";
+        cin >> Pin_number;
+        if (Pin_number.length() < 4) {
+            cout << "\nThere should be atleast 4 digits";
+            continue;
+        } else if (Pin_number.length() > 8) {
+            cout << "\nThere should be atmost 8 digits";
+            continue;
+        } else if (Pin_number.length() <= 8) {
+            bool valid = true;
+            for (char ch : Pin_number) {
+                if (ch < '0' || ch > '9') {
+                    cout << "\nYour input pin number is invalid because it contains letters,and symbols";
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) continue;
+        }
+        if (Pin_number.length() > 8) {
+            cout << "\nThere should be atmost 8 digits";
+            continue;
+        }else if(Pin_number.length() <= 8) {
+            bool valid = true;
+            for (char ch : Pin_number) {
+                if (ch < '0' || ch > '9') {
+                    cout << "\nYour input pin number is invalid because it contains letters,and symbols";
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) continue;
+        }
+        bool isWeak = pinChecker.isWeak(Pin_number);
+
+        if (isWeak) {
+            cout << "\nYour pin number is weak. Please choose a stronger pin." << endl;
+            continue;
+        } else {
+            break;
+        }
+    }
+    return Pin_number;
+};
