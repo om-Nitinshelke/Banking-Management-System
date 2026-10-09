@@ -315,3 +315,34 @@
 - Preserved the existing three-attempt login limit and account lockout mechanism.
 - Preserved account activation/unlocking through PIN verification.
 - This separation improves code organization and keeps authentication responsibilities independent from the main program flow.
+
+- Phase 10.3 — Account Management
+
+     Separated account and transaction file-handling operations from main.cpp into a dedicated Account Manager module.
+
+     - 10.3.1 — Separate Account Loading
+          Moved LoadAccounts() from main.cpp to src/account_manager.cpp.
+          Added the function declaration to include/account_manager.h.
+          Preserved account loading from data/account.txt.
+          Initialized transaction records for loaded accounts during account loading.
+
+     - 10.3.2 — Separate Account Saving
+          Moved account-saving logic into src/account_manager.cpp.
+          Added the corresponding function declaration to include/account_manager.h.
+          Preserved account data persistence using the existing account file format.
+
+     - 10.3.3 — Separate Transaction Loading
+          Moved transaction-loading logic into src/account_manager.cpp.
+          Added the corresponding function declaration to include/account_manager.h.
+          Preserved loading of transaction records from the transaction data file.
+
+     - 10.3.4 — Separate Transaction Saving
+          Moved transaction-saving logic into src/account_manager.cpp.
+          Added the corresponding function declaration to include/account_manager.h.
+          Preserved transaction history persistence using the existing transaction data file.
+
+     - Benefits of Phase 10.3
+          Centralized account and transaction file-handling responsibilities.
+          Reduced the amount of implementation logic in main.cpp.
+          Improved modularity and maintainability.
+          Prepared the project for further separation of application responsibilities.

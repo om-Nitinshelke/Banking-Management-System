@@ -96,8 +96,11 @@ A C++ Banking Managment System built as a learning project to practice C++ progr
 ## Phase 10: Project Architecture & Separation of Responsibilities
   - ✅ 10.1: Separate BankAccount
   - ✅ 10.2: Separate Authentication
-  - ⬜ 10.3: Account Management
-  - ⬜ 10.4: Clean main.cpp
+  - ✅ 10.3: Account Management
+    - ✅ 10.3.1: Separate Account Loading
+    - ✅ 10.3.2: Separate Account Saving
+    - ✅ 10.3.3: Separate Transaction Loading
+    - ✅ 10.3.4: Separate Transaction Saving
 
 
 ## Features
