@@ -12,4 +12,6 @@ void LoadAccounts(
     std::unordered_map<int, Transaction_Record> &transactions
 );
 
+void LoadTransactions(std::unordered_map<int, Transaction_Record> &transactions);
+
 #endif

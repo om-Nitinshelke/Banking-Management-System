@@ -12,30 +12,6 @@
 #include "../include/account_manager.h"
 
 
-
-void LoadTransactions(std::unordered_map<int, Transaction_Record> &transactions) {
-    ifstream transaction_file("data/transaction.txt");
-
-    if (!transaction_file) {
-        std::cout << "Error: Unable to open transaction data file." << endl;
-        return;
-    }
-
-    int acn;
-    string str1;
-    double amnt;
-
-    while (transaction_file >> acn >> str1 >> amnt) {
-        if (transactions.find(acn) == transactions.end()) {
-            std::cout << "Error: Transaction found for unknown account number " << acn << endl;
-            continue; 
-        }
-
-        transactions.at(acn).addTransaction(str1, amnt);
-    }
-
-}
-
 void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp) {
     ofstream file("data/account.txt");
 
