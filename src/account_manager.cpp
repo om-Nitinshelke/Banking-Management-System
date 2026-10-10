@@ -1,5 +1,6 @@
 #include "../include/account_manager.h"
 #include "../include/pin_strength.h"
+#include <sodium.h>
 
 #include <fstream>
 #include <iostream>
@@ -157,3 +158,63 @@ std::string GivePIN() {
     }
     return Pin_number;
 };
+
+bool CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::unordered_map<int, Transaction_Record> &transactions) {
+    std::string name;
+    std::string surname;
+    int account_number;
+    double amount;
+    std::string pin;
+
+    std::cout << "\nEnter your name: ";
+    std::cin >> name;
+
+    std::cout << "\nEnter your surname: ";
+    std::cin >> surname;
+
+    std::cout << "\nEnter your account number: ";
+    std::cin >> account_number;
+
+    if (account_number <= 0) {
+        std::cout << "Account number should be positive" << std::endl;
+        return false;
+    }
+
+    if (mp.find(account_number) != mp.end()) {
+        std::cout << "Account already exists" << std::endl;
+        return false;
+    }
+
+    std::cout << "\nEnter the amount for first deposit. Minimum amount is 500: ";
+    std::cin >> amount;
+
+    pin = GivePIN();
+    size_t pin_length = pin.length();
+    char hashed_pin[crypto_pwhash_STRBYTES];
+
+    if (crypto_pwhash_str(
+                hashed_pin,
+                pin.c_str(),
+                pin_length,
+                crypto_pwhash_OPSLIMIT_INTERACTIVE,
+                crypto_pwhash_MEMLIMIT_INTERACTIVE) != 0) {
+                std::cout<<"\nPIN hashing failed" << std::endl;
+                return false;
+            }
+            string storedHash = hashed_pin;
+            
+
+    if (amount < 500) {
+        std::cout << "Minimum amount should be 500" << endl;
+    } else {
+        mp[account_number] = {name, surname, to_string(amount),storedHash, "Active"};
+        auto result = transactions.emplace(
+            account_number,
+            Transaction_Record(account_number)
+        );
+        result.first->second.addTransaction("InitialDeposit", amount);
+        std::cout << "Account created successfully" << std::endl;
+        return true;
+    }
+    return false;   
+}

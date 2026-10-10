@@ -42,19 +42,33 @@ int main() {
         }
     } else if (hasAccount == 'n' || hasAccount == 'N') {
         std::cout << "\nPlease create an account first." << endl;
+        std::cout<< "\nDo you want to create an account? (y/n): ";
+        char createAccountChoice;
+        std::cin >> createAccountChoice;
+        if (createAccountChoice == 'y' || createAccountChoice == 'Y') {
+            if (!CreateAccount(mp, transactions)) {
+                std::cout << "\nAccount creation failed. Exiting." << endl;
+                SaveAccounts(mp);
+                return 1;
+            }
+        } else {
+            std::cout << "\nAccount creation declined. Exiting." << endl;
+            SaveAccounts(mp);
+            return 1;
+        }
     } else {
         std::cout << "\nInvalid input. Exiting." << endl;
         return 1;
     }
+
 
     while (true) {
         std::cout << "\n=====Main Menu=====" << endl;
         std::cout << "1. Deposit Money" << endl;
         std::cout << "2. WithDraw Money" << endl;
         std::cout << "3. Check Account" << endl;
-        std::cout << "4. Create Account" << endl;
-        std::cout << "5. Transaction History" << endl;
-        std::cout << "6. Exit" << endl;
+        std::cout << "4. Transaction History" << endl;
+        std::cout << "5. Exit" << endl;
 
         int choice;
         int account_Number;
@@ -62,71 +76,7 @@ int main() {
         std::cout << "\nEnter your choice: ";
         std::cin >> choice;
 
-        if (choice == 4) {
-            string name;
-            string surname;
-            int account_number;
-            double amount;
-            string pin;
-
-            std::cout << "\nEnter your name: ";
-            std::cin >> name;
-
-            std::cout << "\nEnter your surname: ";
-            std::cin >> surname;
-
-            std::cout << "\nEnter your account number: ";
-            std::cin >> account_number;
-
-            if (account_number <= 0) {
-                std::cout << "Account number should be positive" << endl;
-                continue;
-            }
-
-            if (mp.find(account_number) != mp.end()) {
-                std::cout << "Account already exists" << endl;
-                continue;
-            }
-
-            std::cout << "\nEnter the amount for first deposit. Minimum amount is 500: ";
-            std::cin >> amount;
-
-            pin = GivePIN();
-
-            size_t pin_length = pin.length();
-            char hashed_pin[crypto_pwhash_STRBYTES]; 
-
-            if (crypto_pwhash_str(
-                hashed_pin,
-                pin.c_str(),
-                pin_length,
-                crypto_pwhash_OPSLIMIT_INTERACTIVE,
-                crypto_pwhash_MEMLIMIT_INTERACTIVE) != 0) {
-                std::cout<<"\nPIN hashing failed" << endl;
-                continue;
-            }
-            string storedHash = hashed_pin;
-            
-
-            if (amount < 500) {
-                std::cout << "Minimum amount should be 500" << endl;
-            } else {
-                mp[account_number] = {name, surname, to_string(amount),storedHash, "Active"};
-
-                auto result = transactions.emplace(
-                    account_number,
-                    Transaction_Record(account_number)
-                );
-
-                result.first->second.addTransaction("InitialDeposit", amount);
-
-                std::cout << "Account created successfully" << endl;
-            }
-
-            continue;
-        }
-
-        if (choice == 6) {
+        if (choice == 5) {
             std::cout << "Thanks for using Banking Management System" << endl;
             SaveAccounts(mp);
             Savetransactions(transactions);
@@ -134,7 +84,7 @@ int main() {
         }
 
 
-        if (choice < 1 || choice > 6) {
+        if (choice < 1 || choice > 5) {
             std::cout << "Invalid Choice" << endl;
             continue;
         }
@@ -198,15 +148,6 @@ int main() {
 
             case 3: {
                 account.displayAccount(mp, account_Number);
-                break;
-            }
-
-            case 5: {
-                try {
-                    transactions.at(account_Number).displayTransaction();
-                } catch (const out_of_range &e) {
-                    std::cout << "Exception: Account not found in transaction records - " << e.what() << endl;
-                }
                 break;
             }
         }
