@@ -4,25 +4,25 @@
 #include <vector>
 #include <string>
 #include <ostream>
+#include <unordered_map>
 
-using namespace std;
 
 struct Transaction {
-    string type;
+    std::string type;
     double amount;
 };
 
 class Transaction_Record {
 private:
     int account;
-    vector<Transaction> transaction_record;
+    std::vector<Transaction> transaction_record;
 
 public:
     Transaction_Record(int account_number);
 
-    void addTransaction(string type, double amount);
-    void displayTransaction() const;
-    void saveTransactions(ostream &out) const;
+    void addTransaction(std::string type, double amount);
+    void displayTransaction(const std::unordered_map<int, Transaction_Record> &transactions, int account_number) const;
+    void saveTransactions(std::ostream &out) const;
 };
 
 #endif

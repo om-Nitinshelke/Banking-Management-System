@@ -1,9 +1,10 @@
+#include <iostream>
+#include <fstream>
+#include <unordered_map>
 #include "../include/account_manager.h"
 #include "../include/pin_strength.h"
 #include <sodium.h>
-
-#include <fstream>
-#include <iostream>
+#include <string>
 
 void LoadAccounts(
     std::unordered_map<int, std::vector<std::string>> &mp,
@@ -50,20 +51,20 @@ void LoadAccounts(
 
 
 void LoadTransactions(std::unordered_map<int, Transaction_Record> &transactions) {
-    ifstream transaction_file("data/transaction.txt");
+    std::ifstream transaction_file("data/transaction.txt");
 
     if (!transaction_file) {
-        std::cout << "Error: Unable to open transaction data file." << endl;
+        std::cout << "Error: Unable to open transaction data file." << std::endl;
         return;
     }
 
     int acn;
-    string str1;
+    std::string str1;
     double amnt;
 
     while (transaction_file >> acn >> str1 >> amnt) {
         if (transactions.find(acn) == transactions.end()) {
-            std::cout << "Error: Transaction found for unknown account number " << acn << endl;
+            std::cout << "Error: Transaction found for unknown account number " << acn << std::endl;
             continue; 
         }
 
@@ -73,16 +74,16 @@ void LoadTransactions(std::unordered_map<int, Transaction_Record> &transactions)
 }
 
 void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp) {
-    ofstream file("data/account.txt");
+    std::ofstream file("data/account.txt");
 
     if (!file) {
-        std::cout << "Error: Unable to open account data file for writing." << endl;
+        std::cout << "Error: Unable to open account data file for writing." << std::endl;
         return;
     }
 
     for (const auto &accountData : mp) {
         if (accountData.second.size() < 5) {
-            std::cout << "Error: Incomplete account data for account number " << accountData.first << endl;
+            std::cout << "Error: Incomplete account data for account number " << accountData.first << std::endl;
             continue; 
         }
         file << accountData.first << " "
@@ -90,7 +91,7 @@ void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp) {
              << accountData.second[1] << " "
              << accountData.second[2] << " "
              << accountData.second[3] << " "
-             << accountData.second[4] << endl;
+             << accountData.second[4] << std::endl;
     }
 
 }
@@ -99,7 +100,7 @@ void Savetransactions(const std::unordered_map<int, Transaction_Record> &transac
     std::ofstream transaction_file("data/transaction.txt");
 
     if (!transaction_file) {
-        std::cout << "Error: Unable to open transaction data file for writing." << endl;
+        std::cout << "Error: Unable to open transaction data file for writing." << std::endl;
         return;
     }
 
@@ -114,19 +115,19 @@ std::string GivePIN() {
     PINStrength pinChecker;
 
     while (true) {
-        cout << "\nEnter the pin number(atmost there should be 8 digits):";
-        cin >> Pin_number;
+        std::cout << "\nEnter the pin number(atmost there should be 8 digits):";
+        std::cin >> Pin_number;
         if (Pin_number.length() < 4) {
-            cout << "\nThere should be atleast 4 digits";
+            std::cout << "\nThere should be atleast 4 digits";
             continue;
         } else if (Pin_number.length() > 8) {
-            cout << "\nThere should be atmost 8 digits";
+            std::cout << "\nThere should be atmost 8 digits";
             continue;
         } else if (Pin_number.length() <= 8) {
             bool valid = true;
             for (char ch : Pin_number) {
                 if (ch < '0' || ch > '9') {
-                    cout << "\nYour input pin number is invalid because it contains letters,and symbols";
+                    std::cout << "\nYour input pin number is invalid because it contains letters,and symbols";
                     valid = false;
                     break;
                 }
@@ -134,13 +135,13 @@ std::string GivePIN() {
             if (!valid) continue;
         }
         if (Pin_number.length() > 8) {
-            cout << "\nThere should be atmost 8 digits";
+            std::cout << "\nThere should be atmost 8 digits";
             continue;
         }else if(Pin_number.length() <= 8) {
             bool valid = true;
             for (char ch : Pin_number) {
                 if (ch < '0' || ch > '9') {
-                    cout << "\nYour input pin number is invalid because it contains letters,and symbols";
+                    std::cout << "\nYour input pin number is invalid because it contains letters,and symbols";
                     valid = false;
                     break;
                 }
@@ -150,7 +151,7 @@ std::string GivePIN() {
         bool isWeak = pinChecker.isWeak(Pin_number);
 
         if (isWeak) {
-            cout << "\nYour pin number is weak. Please choose a stronger pin." << endl;
+            std::cout << "\nYour pin number is weak. Please choose a stronger pin." << std::    endl;
             continue;
         } else {
             break;
@@ -201,13 +202,13 @@ bool CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::un
                 std::cout<<"\nPIN hashing failed" << std::endl;
                 return false;
             }
-            string storedHash = hashed_pin;
+            std::string storedHash = hashed_pin;
             
 
     if (amount < 500) {
-        std::cout << "Minimum amount should be 500" << endl;
+        std::cout << "Minimum amount should be 500" << std::endl;
     } else {
-        mp[account_number] = {name, surname, to_string(amount),storedHash, "Active"};
+        mp[account_number] = {name, surname, std::to_string(amount),storedHash, "Active"};
         auto result = transactions.emplace(
             account_number,
             Transaction_Record(account_number)

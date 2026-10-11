@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-bool Login(std::unordered_map<int, std::vector<std::string>> &mp);
+std::pair<bool, int> Login(std::unordered_map<int, std::vector<std::string>> &mp);
 
 bool activate(
     std::unordered_map<int, std::vector<std::string>>::iterator &it

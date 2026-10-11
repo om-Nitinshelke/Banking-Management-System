@@ -1,7 +1,6 @@
-#include "../include/authentication.h"
-
 #include <iostream>
 #include <sodium.h>
+#include "../include/authentication.h"
 
 bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it)
 {
@@ -40,7 +39,7 @@ bool activate(std::unordered_map<int, std::vector<std::string>>::iterator &it)
     return false;
 }
 
-bool Login(std::unordered_map<int, std::vector<std::string>> &mp)
+std::pair<bool, int> Login(std::unordered_map<int, std::vector<std::string>> &mp)
 {
     std::string enteredpin;
     int account_number;
@@ -53,12 +52,12 @@ bool Login(std::unordered_map<int, std::vector<std::string>> &mp)
     if (it == mp.end())
     {
         std::cout << "\nAccount Number does not exist." << std::endl;
-        return false;
+        return {false, 0};
     }
     else if (it->second.size() < 5)
     {
         std::cout << "\nAccount data is incomplete." << std::endl;
-        return false;
+        return {false, 0};
     }
     else if (it->second[4] == "Inactive")
     {
@@ -71,16 +70,16 @@ bool Login(std::unordered_map<int, std::vector<std::string>> &mp)
 
         if (choice == 'Y' || choice == 'y')
         {
-            return activate(it);
+            return activate(it) ? std::make_pair(true, account_number) : std::make_pair(false, 0);
         }
         else if (choice == 'N' || choice == 'n')
         {
-            return false;
+            return {false, 0};
         }
         else
         {
             std::cout << "\nInvalid choice";
-            return false;
+            return {false, 0};
         }
     }
     else
@@ -103,7 +102,7 @@ bool Login(std::unordered_map<int, std::vector<std::string>> &mp)
                     enteredpin.c_str(),
                     enteredpin.length()) == 0)
             {
-                return true;
+                return {true, account_number};
             }
 
             remaining--;
@@ -120,5 +119,5 @@ bool Login(std::unordered_map<int, std::vector<std::string>> &mp)
 
     it->second[4] = "Inactive";
 
-    return false;
+    return {false, 0};
 }
