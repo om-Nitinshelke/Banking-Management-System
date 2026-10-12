@@ -47,12 +47,15 @@ int main() {
         std::cout<< "\nDo you want to create an account? (y/n): ";
         char createAccountChoice;
         std::cin >> createAccountChoice;
+        int account_number;
         if (createAccountChoice == 'y' || createAccountChoice == 'Y') {
-            if (!CreateAccount(mp, transactions)) {
+            account_number = CreateAccount(mp, transactions);
+            if (!account_number) {
                 std::cout << "\nAccount creation failed. Exiting." <<std::endl;
                 SaveAccounts(mp);
                 return 1;
             }
+            login_result = std::make_pair(true, account_number);
         } else {
             std::cout << "\nAccount creation declined. Exiting." << std::endl;
             SaveAccounts(mp);
@@ -152,7 +155,7 @@ int main() {
 
            case 4: {
             try {
-                transactions.at(login_result.second).displayTransaction(transactions, login_result.second);
+                transactions.at(login_result.second).displayTransaction();
             } catch (const std::out_of_range &e) {
                 std::cout << "Exception: Account not found in transaction records - " << e.what() <<std::endl;
             }

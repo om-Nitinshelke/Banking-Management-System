@@ -12,15 +12,13 @@ void Transaction_Record::addTransaction(std::string type, double amount) {
     transaction_record.push_back({type, amount});
 }
 
-void Transaction_Record::displayTransaction(const std::unordered_map<int, Transaction_Record> &transactions, int account_number) const {
+void Transaction_Record::displayTransaction() const {
     if (transaction_record.empty()) {
         std::cout << "No transactions yet" << std::endl;
         return;
     }
 
     std::cout << "\n=====Transaction History=====" << std::endl;
-    std::cout << "Account Number: " << account << std::endl;
-
     for (Transaction record : transaction_record) {
         std::cout << record.type << " " << record.amount << std::endl;
     }

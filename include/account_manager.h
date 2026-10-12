@@ -18,7 +18,7 @@ void SaveAccounts(const std::unordered_map<int, std::vector<std::string>> &mp);
 
 void Savetransactions(const std::unordered_map<int, Transaction_Record> &transactions);
 
-bool CreateAccount(
+int CreateAccount(
     std::unordered_map<int, std::vector<std::string>> &mp,
     std::unordered_map<int, Transaction_Record> &transactions
 );

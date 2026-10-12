@@ -21,7 +21,7 @@ public:
     Transaction_Record(int account_number);
 
     void addTransaction(std::string type, double amount);
-    void displayTransaction(const std::unordered_map<int, Transaction_Record> &transactions, int account_number) const;
+    void displayTransaction() const;
     void saveTransactions(std::ostream &out) const;
 };
 

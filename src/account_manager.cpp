@@ -160,7 +160,7 @@ std::string GivePIN() {
     return Pin_number;
 };
 
-bool CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::unordered_map<int, Transaction_Record> &transactions) {
+int CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::unordered_map<int, Transaction_Record> &transactions) {
     std::string name;
     std::string surname;
     int account_number;
@@ -178,12 +178,12 @@ bool CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::un
 
     if (account_number <= 0) {
         std::cout << "Account number should be positive" << std::endl;
-        return false;
+        return 0;
     }
 
     if (mp.find(account_number) != mp.end()) {
         std::cout << "Account already exists" << std::endl;
-        return false;
+        return 0;
     }
 
     std::cout << "\nEnter the amount for first deposit. Minimum amount is 500: ";
@@ -200,7 +200,7 @@ bool CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::un
                 crypto_pwhash_OPSLIMIT_INTERACTIVE,
                 crypto_pwhash_MEMLIMIT_INTERACTIVE) != 0) {
                 std::cout<<"\nPIN hashing failed" << std::endl;
-                return false;
+                return 0;
             }
             std::string storedHash = hashed_pin;
             
@@ -215,7 +215,7 @@ bool CreateAccount(std::unordered_map<int, std::vector<std::string>> &mp,std::un
         );
         result.first->second.addTransaction("InitialDeposit", amount);
         std::cout << "Account created successfully" << std::endl;
-        return true;
+        return account_number;
     }
-    return false;   
+    return 0;  
 }
