@@ -164,5 +164,31 @@ Banking-Management-System/
      └── project-phases.md
 
 
+## Project Status
+
+**Status: Completed**
+
+The Banking Management System is a C++ learning project developed to
+practice object-oriented programming, file handling, data structures,
+exception handling, authentication, password hashing, and code
+organization.
+
+The project was built for educational purposes and to understand how
+different concepts can be combined in a single application. It is not
+intended for real-world banking operations or production use.
+
+Further improvements and refactoring are not currently planned.
+
+## Disclaimer
+
+This project is intended solely for learning and educational purposes.
+It demonstrates basic banking operations and selected programming and
+security concepts using C++.
+
+It has not been designed, tested, or audited for real-world financial
+use. It should not be used to store actual financial information,
+manage real bank accounts, or perform real financial transactions.
+
+
 
 

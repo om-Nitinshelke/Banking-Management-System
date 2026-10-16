@@ -346,3 +346,37 @@
           Reduced the amount of implementation logic in main.cpp.
           Improved modularity and maintainability.
           Prepared the project for further separation of application responsibilities.
+
+- 10.4 Clean Main Function
+     Status: Completed for the project's learning objectives*
+     - Organized the main program to coordinate the application's modules.
+     - Reduced the amount of account-management and authentication logichandled directly by the main function.
+     - Improved the separation of responsibilities between different files.
+
+### Concepts Practiced
+
+- C++ fundamentals and object-oriented programming
+- Classes, objects, constructors, and encapsulation
+- Data structures, including `unordered_map` and `vector`
+- Account operations and transaction management
+- File handling and data persistence
+- Exception handling and input validation
+- Authentication and PIN verification
+- PIN hashing using Libsodium and Argon2id
+- Login attempt limiting and account lockout
+- Account recovery and weak PIN detection
+- Separation of responsibilities using header and source files
+- Git and GitHub for version control
+
+### Project Purpose and Limitations
+
+This project was developed to strengthen C++ programming skills and
+gain practical experience by combining multiple programming concepts
+in one application.
+
+It is a learning project, not a production-ready banking application.
+It has not been designed or audited for real-world financial use and
+should not be used to manage real bank accounts or financial transactions.
+
+No further development is currently planned. The project is considered
+complete for its learning objectives.
